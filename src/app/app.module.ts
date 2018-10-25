@@ -2,10 +2,7 @@ import { ErrorHandler, NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { SplashScreen } from '@ionic-native/splash-screen';
 import { StatusBar } from '@ionic-native/status-bar';
-import { AngularFireModule } from 'angularfire2';
-import { AngularFirestoreModule } from '@angular/fire/firestore';
 import { IonicApp, IonicErrorHandler, IonicModule } from 'ionic-angular';
-
 import { HomePage } from '../pages/home/home';
 import { LoginPage } from '../pages/login/login';
 import { NewGroupPage } from '../pages/new-group/new-group';
@@ -24,19 +21,7 @@ import { MyApp } from './app.component';
         TalkPage,
         TalkDetailPage
     ],
-    imports: [
-        BrowserModule,
-        IonicModule.forRoot(MyApp),
-        AngularFirestoreModule,
-        AngularFireModule.initializeApp({
-            apiKey: 'AIzaSyAp-qZFzwlqnpyHtptCV2P80fc5flThwS0',
-            authDomain: 'chat-prof.firebaseapp.com',
-            databaseURL: 'https://chat-prof.firebaseio.com',
-            projectId: 'chat-prof',
-            storageBucket: 'chat-prof.appspot.com',
-            messagingSenderId: '512390234652'
-        })
-    ],
+    imports: [BrowserModule, IonicModule.forRoot(MyApp)],
     bootstrap: [IonicApp],
     entryComponents: [
         MyApp,
