@@ -1,7 +1,5 @@
 import { Component } from '@angular/core';
 import { NavController, AlertController } from 'ionic-angular';
-import { TalkPage } from '../talk/talk';
-import { NewGroupPage } from '../new-group/new-group';
 
 @Component({
     selector: 'page-home',
@@ -13,16 +11,12 @@ export class HomePage {
         public alertCtrl: AlertController
     ) {}
 
-    createGroup() {
-        this.navCtrl.push(NewGroupPage);
-    }
-
     enterTalk() {
         const prompt = this.alertCtrl.create({
             title: 'Nova conversa',
             inputs: [
                 {
-                    name: 'codigo',
+                    name: 'Código',
                     placeholder: 'Código do grupo'
                 }
             ],
@@ -36,16 +30,12 @@ export class HomePage {
                 {
                     text: 'Confirmar',
                     handler: data => {
-                        this.navCtrl.push(TalkPage, data);
+                        console.log('Saved clicked', data);
                     }
                 }
             ]
         });
 
         prompt.present();
-    }
-
-    openTalk() {
-        this.navCtrl.push(TalkPage);
     }
 }

@@ -44,8 +44,4 @@ export class HomePage {
 
         prompt.present();
     }
-
-    openTalk() {
-        this.navCtrl.push(TalkPage);
-    }
 }

@@ -1,7 +1,6 @@
 import { Component } from '@angular/core';
 import { NavController, AlertController } from 'ionic-angular';
 import { TalkPage } from '../talk/talk';
-import { NewGroupPage } from '../new-group/new-group';
 
 @Component({
     selector: 'page-home',
@@ -12,10 +11,6 @@ export class HomePage {
         public navCtrl: NavController,
         public alertCtrl: AlertController
     ) {}
-
-    createGroup() {
-        this.navCtrl.push(NewGroupPage);
-    }
 
     enterTalk() {
         const prompt = this.alertCtrl.create({
@@ -36,16 +31,12 @@ export class HomePage {
                 {
                     text: 'Confirmar',
                     handler: data => {
-                        this.navCtrl.push(TalkPage, data);
+                        this.navCtrl.push(TalkPage);
                     }
                 }
             ]
         });
 
         prompt.present();
-    }
-
-    openTalk() {
-        this.navCtrl.push(TalkPage);
     }
 }
