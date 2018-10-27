@@ -2,16 +2,31 @@ import { Component } from '@angular/core';
 import { NavController, AlertController } from 'ionic-angular';
 import { TalkPage } from '../talk/talk';
 import { NewGroupPage } from '../new-group/new-group';
+import { AngularFirestore } from '@angular/fire/firestore';
 
 @Component({
     selector: 'page-home',
     templateUrl: 'home.html'
 })
 export class HomePage {
+    listaGrupos: Array<any> = [];
+
     constructor(
-        public navCtrl: NavController,
-        public alertCtrl: AlertController
-    ) {}
+        private navCtrl: NavController,
+        private alertCtrl: AlertController,
+        _db: AngularFirestore
+    ) {
+        _db.collection('grupos')
+            .snapshotChanges()
+            .subscribe(i => {
+                this.listaGrupos = i.map(item => {
+                    const data = item.payload.doc.data();
+                    const id = item.payload.doc.id;
+                    return { id, ...data };
+                });
+                console.log(this.listaGrupos);
+            });
+    }
 
     createGroup() {
         this.navCtrl.push(NewGroupPage);
@@ -45,7 +60,7 @@ export class HomePage {
         prompt.present();
     }
 
-    openTalk() {
-        this.navCtrl.push(TalkPage);
+    openTalk(talk) {
+        this.navCtrl.push(TalkPage, { info: talk });
     }
 }

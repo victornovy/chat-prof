@@ -8,9 +8,9 @@
 
 <ion-content padding>
     <ion-list>
-        <button ion-item (click)="openTalk()">Grupo 1</button>
-        <button ion-item (click)="openTalk()">Grupo 2</button>
-        <button ion-item (click)="openTalk()">Grupo 3</button>
+        <button ion-item *ngFor="let item of listaGrupos" (click)="openTalk(item)">
+            {{item.nome}}
+        </button>
     </ion-list>
     <ion-fab right bottom>
         <button ion-fab color="secondary">
