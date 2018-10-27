@@ -1,14 +1,26 @@
 <ion-header>
     <ion-navbar>
-        <ion-title (click)="openTalkDetail()">Conversa - Nome do grupo</ion-title>
+        <ion-title (click)="openTalkDetail()">{{ title }}</ion-title>
     </ion-navbar>
 </ion-header>
 
+<ion-content>
+    <ion-list no-lines>
+        <ion-item *ngFor="let item of talkList" text-end>
+            <ion-label>
+                <p class="msg-autor">{{ item.autor }}</p>
+                {{item.texto}}
+                <p class="msg-info">{{ showData(item.formatData) }}</p>
+            </ion-label>
+        </ion-item>
+    </ion-list>
+</ion-content>
+
 <ion-footer>
     <ion-toolbar>
-        <ion-input placeholder="Digite aqui..." type="text"></ion-input>
+        <ion-input placeholder="Digite aqui..." type="text" [(ngModel)]="mensagem"></ion-input>
         <ion-buttons end>
-            <button ion-button icon-only>
+            <button ion-button icon-only (click)="sendMsg()">
                 <ion-icon name="send"></ion-icon>
             </button>
         </ion-buttons>
