@@ -1,25 +1,47 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
-
-/**
- * Generated class for the TalkDetailPage page.
- *
- * See https://ionicframework.com/docs/components/#navigation for more info on
- * Ionic pages and navigation.
- */
+import { AngularFirestore } from '@angular/fire/firestore';
+import { Subscription } from 'rxjs';
 
 @IonicPage()
 @Component({
-  selector: 'page-talk-detail',
-  templateUrl: 'talk-detail.html',
+    selector: 'page-talk-detail',
+    templateUrl: 'talk-detail.html'
 })
 export class TalkDetailPage {
+    titulo: string;
+    descricao: string;
+    membrosList: Array<any> = [];
 
-  constructor(public navCtrl: NavController, public navParams: NavParams) {
-  }
+    private membrosSubs: Subscription;
 
-  ionViewDidLoad() {
-    console.log('ionViewDidLoad TalkDetailPage');
-  }
+    constructor(
+        private navCtrl: NavController,
+        private navParams: NavParams,
+        _db: AngularFirestore
+    ) {
+        const info = this.navParams.get('info');
+        this.titulo = info.nome;
+        this.descricao = info.descricao;
 
+        info.membros.forEach(id => {
+            this.membrosSubs = _db
+                .doc(`usuarios/${id}`)
+                .valueChanges()
+                .subscribe((usuario: any) => {
+                    usuario.id = id;
+
+                    let hasUsu = this.membrosList.find(usu => usu.id === id);
+                    if (!hasUsu) {
+                        this.membrosList.push(usuario);
+                    } else {
+                        hasUsu = { ...usuario };
+                    }
+                });
+        });
+    }
+
+    ionViewWillLeave() {
+        this.membrosSubs.unsubscribe();
+    }
 }

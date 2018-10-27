@@ -35,7 +35,9 @@ export class TalkPage {
     }
 
     openTalkDetail() {
-        this.navCtrl.push(TalkDetailPage);
+        this.navCtrl.push(TalkDetailPage, {
+            info: this.navParams.get('info')
+        });
     }
 
     showData(data) {
