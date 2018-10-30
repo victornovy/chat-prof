@@ -11,6 +11,7 @@ import { Subscription } from 'rxjs';
 export class TalkDetailPage {
     titulo: string;
     descricao: string;
+    chave: number;
     membrosList: Array<any> = [];
 
     private membrosSubs: Subscription;
@@ -23,6 +24,7 @@ export class TalkDetailPage {
         const info = this.navParams.get('info');
         this.titulo = info.nome;
         this.descricao = info.descricao;
+        this.chave = info.chave;
 
         info.membros.forEach(id => {
             this.membrosSubs = _db
