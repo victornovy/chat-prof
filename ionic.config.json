@@ -1,5 +1,6 @@
 {
   "name": "chat-prof",
   "integrations": {},
-  "type": "ionic-angular"
+  "type": "ionic-angular",
+  "pro_id": "8be48c60"
 }
