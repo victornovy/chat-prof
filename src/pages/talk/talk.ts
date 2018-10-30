@@ -1,7 +1,10 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
 import { TalkDetailPage } from '../talk-detail/talk-detail';
-import { AngularFirestore } from '@angular/fire/firestore';
+import {
+    AngularFirestore,
+    AngularFirestoreCollection
+} from '@angular/fire/firestore';
 import { Timestamp } from 'rxjs';
 
 @IonicPage()
@@ -13,6 +16,9 @@ export class TalkPage {
     title: string;
     talkList: Array<any> = [];
     mensagem: string;
+    id: string;
+
+    groupMsg: AngularFirestoreCollection;
 
     constructor(
         private navCtrl: NavController,
@@ -21,17 +27,18 @@ export class TalkPage {
     ) {
         const info = this.navParams.get('info');
         this.title = info.nome;
+        this.id = info.id;
 
-        _db.collection(`grupos/${info.id}/msg`, ref =>
+        this.groupMsg = _db.collection(`grupos/${this.id}/msg`, ref =>
             ref.orderBy('data', 'asc')
-        )
-            .valueChanges()
-            .subscribe(item => {
-                this.talkList = item.map((item: any) => {
-                    item.formatData = this.formatData(item.data.seconds);
-                    return item;
-                });
+        );
+
+        this.groupMsg.valueChanges().subscribe(item => {
+            this.talkList = item.map((msg: any) => {
+                msg.formatData = this.formatData(msg.data.seconds);
+                return msg;
             });
+        });
     }
 
     openTalkDetail() {
@@ -64,11 +71,12 @@ export class TalkPage {
     }
 
     sendMsg() {
-        this.talkList.push({
+        this.groupMsg.add({
             autor: 'batata',
             texto: this.mensagem,
-            formatData: this.formatData()
+            data: new Date()
         });
+
         this.mensagem = '';
     }
 }
