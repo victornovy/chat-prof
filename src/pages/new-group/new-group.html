@@ -10,18 +10,16 @@
 </ion-header>
 
 <ion-content padding>
-    <ion-list>
-        <ion-item>
-            <ion-label floating>Nome</ion-label>
-            <ion-input type="text"></ion-input>
-        </ion-item>
-        <ion-item>
-            <ion-label floating>Descrição</ion-label>
-            <ion-input type="text"></ion-input>
-        </ion-item>
-        <ion-item>
-            <ion-label floating>Código</ion-label>
-            <ion-input type="text"></ion-input>
-        </ion-item>
-    </ion-list>
+    <form [formGroup]="form">
+        <ion-list>
+            <ion-item>
+                <ion-label floating>Nome</ion-label>
+                <ion-input formControlName="nome" type="text"></ion-input>
+            </ion-item>
+            <ion-item>
+                <ion-label floating>Descrição</ion-label>
+                <ion-input formControlName="descricao" type="text"></ion-input>
+            </ion-item>
+        </ion-list>
+    </form>
 </ion-content>
