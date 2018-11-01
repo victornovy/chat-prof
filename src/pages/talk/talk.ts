@@ -28,6 +28,7 @@ export class TalkPage {
         const info = this.navParams.get('info');
         this.title = info.nome;
         this.id = info.id;
+        console.log(info);
 
         this.groupMsg = _db.collection(`grupos/${this.id}/msg`, ref =>
             ref.orderBy('data', 'asc')

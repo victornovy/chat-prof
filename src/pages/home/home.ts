@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { NavController, AlertController } from 'ionic-angular';
+import { NavController, AlertController, ToastController } from 'ionic-angular';
 import { TalkPage } from '../talk/talk';
 import { NewGroupPage } from '../new-group/new-group';
 import { AngularFirestore } from '@angular/fire/firestore';
@@ -14,18 +14,20 @@ export class HomePage {
     constructor(
         private navCtrl: NavController,
         private alertCtrl: AlertController,
-        _db: AngularFirestore
+        private _db: AngularFirestore,
+        private _toastCtrl: ToastController
     ) {
-        _db.collection('grupos')
-            .snapshotChanges()
-            .subscribe(i => {
-                this.listaGrupos = i.map(item => {
-                    const data = item.payload.doc.data();
-                    const id = item.payload.doc.id;
-                    return { id, ...data };
-                });
-                console.log(this.listaGrupos);
+        this._getGrupos().subscribe(i => {
+            this.listaGrupos = i.map(item => {
+                const data = item.payload.doc.data();
+                const id = item.payload.doc.id;
+                return { id, ...data };
             });
+        });
+    }
+
+    private _getGrupos(query?) {
+        return this._db.collection('grupos', query).snapshotChanges();
     }
 
     createGroup() {
@@ -51,13 +53,36 @@ export class HomePage {
                 {
                     text: 'Confirmar',
                     handler: data => {
-                        this.navCtrl.push(TalkPage, data);
+                        this.confirmaAddGrupo(data.codigo);
                     }
                 }
             ]
         });
 
         prompt.present();
+    }
+
+    confirmaAddGrupo(codigo) {
+        const query = ref => ref.where('chave', '==', +codigo).limit(1);
+
+        this._getGrupos(query).subscribe(grupos => {
+            if (grupos.length === 0) {
+                const toast = this._toastCtrl.create({
+                    message: 'Grupo não encontrado',
+                    duration: 4000
+                });
+                toast.present();
+                return;
+            }
+
+            const data = grupos[0].payload.doc.data();
+            const id = grupos[0].payload.doc.id;
+            const infoGrupo = {
+                id,
+                ...data
+            };
+            this.openTalk(infoGrupo);
+        });
     }
 
     openTalk(talk) {
