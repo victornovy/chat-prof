@@ -13,6 +13,8 @@ import { NewTalkPage } from '../pages/new-talk/new-talk';
 import { TalkDetailPage } from '../pages/talk-detail/talk-detail';
 import { TalkPage } from '../pages/talk/talk';
 import { MyApp } from './app.component';
+import { AngularFireAuthModule } from '@angular/fire/auth';
+import { UserProvider } from '../providers/user/user';
 
 @NgModule({
     declarations: [
@@ -28,6 +30,7 @@ import { MyApp } from './app.component';
         BrowserModule,
         IonicModule.forRoot(MyApp),
         AngularFirestoreModule,
+        AngularFireAuthModule,
         AngularFireModule.initializeApp({
             apiKey: 'AIzaSyAp-qZFzwlqnpyHtptCV2P80fc5flThwS0',
             authDomain: 'chat-prof.firebaseapp.com',
@@ -50,7 +53,8 @@ import { MyApp } from './app.component';
     providers: [
         StatusBar,
         SplashScreen,
-        { provide: ErrorHandler, useClass: IonicErrorHandler }
+        { provide: ErrorHandler, useClass: IonicErrorHandler },
+        UserProvider
     ]
 })
 export class AppModule {}

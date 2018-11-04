@@ -3,6 +3,7 @@ import { NavController, AlertController, ToastController } from 'ionic-angular';
 import { TalkPage } from '../talk/talk';
 import { NewGroupPage } from '../new-group/new-group';
 import { AngularFirestore } from '@angular/fire/firestore';
+import { UserProvider } from '../../providers/user/user';
 
 @Component({
     selector: 'page-home',
@@ -15,8 +16,10 @@ export class HomePage {
         private navCtrl: NavController,
         private alertCtrl: AlertController,
         private _db: AngularFirestore,
-        private _toastCtrl: ToastController
+        private _toastCtrl: ToastController,
+        private _user: UserProvider
     ) {
+        console.log(_user);
         this._getGrupos().subscribe(i => {
             this.listaGrupos = i.map(item => {
                 const data = item.payload.doc.data();
