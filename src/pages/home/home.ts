@@ -1,9 +1,10 @@
 import { Component } from '@angular/core';
-import { NavController, AlertController, ToastController } from 'ionic-angular';
-import { TalkPage } from '../talk/talk';
-import { NewGroupPage } from '../new-group/new-group';
+import { AngularFireAuth } from '@angular/fire/auth';
 import { AngularFirestore } from '@angular/fire/firestore';
-import { UserProvider } from '../../providers/user/user';
+import { UserInfo } from 'firebase';
+import { AlertController, NavController, ToastController } from 'ionic-angular';
+import { NewGroupPage } from '../new-group/new-group';
+import { TalkPage } from '../talk/talk';
 
 @Component({
     selector: 'page-home',
@@ -11,20 +12,25 @@ import { UserProvider } from '../../providers/user/user';
 })
 export class HomePage {
     listaGrupos: Array<any> = [];
+    userInfo: UserInfo;
 
     constructor(
         private navCtrl: NavController,
         private alertCtrl: AlertController,
         private _db: AngularFirestore,
         private _toastCtrl: ToastController,
-        private _user: UserProvider
+        _afAuth: AngularFireAuth
     ) {
-        console.log(_user);
-        this._getGrupos().subscribe(i => {
-            this.listaGrupos = i.map(item => {
-                const data = item.payload.doc.data();
-                const id = item.payload.doc.id;
-                return { id, ...data };
+        _afAuth.user.subscribe(user => {
+            this.userInfo = user.providerData[0];
+            this._getGrupos(ref =>
+                ref.where('membros', 'array-contains', this.userInfo.uid)
+            ).subscribe(i => {
+                this.listaGrupos = i.map(item => {
+                    const data = item.payload.doc.data();
+                    const id = item.payload.doc.id;
+                    return { id, ...data };
+                });
             });
         });
     }
@@ -67,7 +73,6 @@ export class HomePage {
 
     confirmaAddGrupo(codigo) {
         const query = ref => ref.where('chave', '==', +codigo).limit(1);
-
         this._getGrupos(query).subscribe(grupos => {
             if (grupos.length === 0) {
                 const toast = this._toastCtrl.create({
@@ -78,8 +83,15 @@ export class HomePage {
                 return;
             }
 
-            const data = grupos[0].payload.doc.data();
+            const data: any = grupos[0].payload.doc.data();
             const id = grupos[0].payload.doc.id;
+
+            if (!data.membros.some(m => m === this.userInfo.uid)) {
+                data.membros.push(this.userInfo.uid);
+                grupos[0].payload.doc.ref.update({ membros: data.membros });
+                return;
+            }
+
             const infoGrupo = {
                 id,
                 ...data
