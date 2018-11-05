@@ -101,6 +101,6 @@ export class HomePage {
     }
 
     openTalk(talk) {
-        this.navCtrl.push(TalkPage, { info: talk });
+        this.navCtrl.push(TalkPage, { info: talk, userInfo: this.userInfo });
     }
 }

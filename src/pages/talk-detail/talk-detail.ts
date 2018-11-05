@@ -26,21 +26,17 @@ export class TalkDetailPage {
         this.descricao = info.descricao;
         this.chave = info.chave;
 
-        info.membros.forEach(id => {
-            this.membrosSubs = _db
-                .doc(`usuarios/${id}`)
-                .valueChanges()
-                .subscribe((usuario: any) => {
-                    usuario.id = id;
-
-                    let hasUsu = this.membrosList.find(usu => usu.id === id);
-                    if (!hasUsu) {
-                        this.membrosList.push(usuario);
-                    } else {
-                        hasUsu = { ...usuario };
-                    }
+        this.membrosSubs = _db
+            .collection(`usuarios`, ref => {
+                info.membros.forEach(membro => {
+                    ref.where('uid', '==', membro);
                 });
-        });
+                return ref;
+            })
+            .valueChanges()
+            .subscribe((usuarios: any) => {
+                this.membrosList = usuarios;
+            });
     }
 
     ionViewWillLeave() {

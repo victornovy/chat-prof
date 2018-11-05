@@ -17,6 +17,7 @@ export class TalkPage {
     talkList: Array<any> = [];
     mensagem: string;
     id: string;
+    userInfo;
 
     groupMsg: AngularFirestoreCollection;
 
@@ -25,10 +26,10 @@ export class TalkPage {
         private navParams: NavParams,
         _db: AngularFirestore
     ) {
+        this.userInfo = this.navParams.get('userInfo');
         const info = this.navParams.get('info');
         this.title = info.nome;
         this.id = info.id;
-        console.log(info);
 
         this.groupMsg = _db.collection(`grupos/${this.id}/msg`, ref =>
             ref.orderBy('data', 'asc')
@@ -73,7 +74,7 @@ export class TalkPage {
 
     sendMsg() {
         this.groupMsg.add({
-            autor: 'batata',
+            autor: this.userInfo.displayName,
             texto: this.mensagem,
             data: new Date()
         });
