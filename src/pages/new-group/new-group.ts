@@ -1,14 +1,14 @@
 import { Component } from '@angular/core';
+import { AngularFireAuth } from '@angular/fire/auth';
+import { AngularFirestore } from '@angular/fire/firestore';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import {
+    AlertController,
     IonicPage,
     NavController,
-    NavParams,
-    AlertController
+    NavParams
 } from 'ionic-angular';
 import { TalkPage } from '../talk/talk';
-import { HomePage } from '../home/home';
-import { FormGroup, FormBuilder, Validators } from '@angular/forms';
-import { AngularFirestore } from '@angular/fire/firestore';
 
 @IonicPage()
 @Component({
@@ -21,14 +21,20 @@ export class NewGroupPage {
         nome: ['', Validators.required],
         descricao: ['', Validators.required]
     });
+    userInfo;
 
     constructor(
         private navCtrl: NavController,
         private navParams: NavParams,
         private _alertCtrl: AlertController,
         private _fb: FormBuilder,
-        private _db: AngularFirestore
-    ) {}
+        private _db: AngularFirestore,
+        _afAuth: AngularFireAuth
+    ) {
+        _afAuth.user.subscribe(user => {
+            this.userInfo = user.providerData[0];
+        });
+    }
 
     private gerarChave(): number {
         return Math.floor(10000 + Math.random() * 90000);
@@ -39,18 +45,18 @@ export class NewGroupPage {
 
         const chave = this.gerarChave();
         const data = {
-            adm: 'RxwYxG1ZF3LaoTzbtIcH',
+            adm: this.userInfo.uid,
             ativo: true,
             descricao: this.form.value.descricao,
             nome: this.form.value.nome,
-            membros: ['RxwYxG1ZF3LaoTzbtIcH'],
+            membros: [this.userInfo.uid],
             chave
         };
         this._db.doc(`grupos/${this._db.createId()}`).set(data);
 
         this.showAlert(chave);
         this.navCtrl.pop();
-        this.navCtrl.push(TalkPage, {info: data});
+        this.navCtrl.push(TalkPage, { info: data, userInfo: this.userInfo });
     }
 
     showAlert(codigo: number) {
