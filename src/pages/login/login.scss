@@ -1,3 +1,45 @@
 page-login {
+    .logo {
+        width: auto;
+        height: 144px;
+    }
 
+    .btn-group {
+        display: flex;
+        justify-content: space-around;
+    }
+
+    .btn-group button {
+        width: 40%;
+    }
+
+    .app-name {
+        color: color($colors, primary);
+        margin-top: 2rem;
+    }
+
+    .login-info {
+        margin-top: 5rem;
+        display: flex;
+        height: 100%;
+        justify-content: flex-start;
+        flex-direction: column;
+    }
+
+    .facebook {
+        color: color($colors, light);
+        background-color: color($colors, facebook);
+    }
+
+    .btn-google {
+        border-color: color($colors, google);
+    }
+
+    .google {
+        height: 25px;
+    }
+
+    .bemVindo {
+        margin-bottom: 2rem;
+    }
 }

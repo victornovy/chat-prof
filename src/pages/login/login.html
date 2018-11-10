@@ -1,4 +1,35 @@
-<ion-content padding>
-    <button ion-button full (click)="loginGoogle()">Google</button>
-    <button ion-button full (click)="loginFacebook()">Facebook</button>
+<ion-content padding text-center>
+    <div class="">
+        <img src="assets/imgs/chat.png" class="logo" />
+        <h1 class="app-name">ChatProf</h1>
+        <div class="login-info">
+            <h3 class="bemVindo">Bem-vindo</h3>
+            <p>Acesse utilizando</p>
+            <div class="btn-group">
+                <button
+                    ion-button
+                    outline
+                    (click)="loginGoogle()"
+                    icon-only
+                    class="btn-google"
+                >
+                    <!-- <ion-icon name="logo-google"></ion-icon> -->
+                    <img
+                        src="assets/icon/google-logo.png"
+                        alt="Google logo"
+                        class="google"
+                    />
+                </button>
+                <button
+                    ion-button
+                    outline
+                    (click)="loginFacebook()"
+                    icon-only
+                    class="facebook"
+                >
+                    <ion-icon name="logo-facebook"></ion-icon>
+                </button>
+            </div>
+        </div>
+    </div>
 </ion-content>
