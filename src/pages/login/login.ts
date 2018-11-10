@@ -29,7 +29,6 @@ export class LoginPage {
                 this.navCtrl.setRoot(HomePage);
             }
         });
-        this._afAuth.auth.signOut();
     }
 
     ionViewDidLoad() {}

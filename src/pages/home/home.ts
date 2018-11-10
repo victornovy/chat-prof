@@ -5,6 +5,7 @@ import { UserInfo } from 'firebase';
 import { AlertController, NavController, ToastController } from 'ionic-angular';
 import { NewGroupPage } from '../new-group/new-group';
 import { TalkPage } from '../talk/talk';
+import { LoginPage } from '../login/login';
 
 @Component({
     selector: 'page-home',
@@ -19,9 +20,14 @@ export class HomePage {
         private alertCtrl: AlertController,
         private _db: AngularFirestore,
         private _toastCtrl: ToastController,
-        _afAuth: AngularFireAuth
+        private _afAuth: AngularFireAuth
     ) {
         _afAuth.user.subscribe(user => {
+            if (!user) {
+                this.navCtrl.setRoot(LoginPage);
+                return;
+            }
+
             this.userInfo = user.providerData[0];
             this._getGrupos(ref =>
                 ref.where('membros', 'array-contains', this.userInfo.uid)
@@ -102,5 +108,9 @@ export class HomePage {
 
     openTalk(talk) {
         this.navCtrl.push(TalkPage, { info: talk, userInfo: this.userInfo });
+    }
+
+    logout() {
+        this._afAuth.auth.signOut();
     }
 }

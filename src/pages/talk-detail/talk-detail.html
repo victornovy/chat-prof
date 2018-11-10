@@ -1,36 +1,27 @@
 <ion-header>
-
-    <ion-navbar>
+    <ion-navbar color="primary">
         <ion-title>{{ titulo }}</ion-title>
     </ion-navbar>
-
 </ion-header>
-
 
 <ion-content padding>
     <ion-card>
-        <ion-card-header>
-            Descrição
-        </ion-card-header>
-        <ion-card-content>
-            {{ descricao }}
-        </ion-card-content>
+        <ion-card-header> Descrição </ion-card-header>
+        <ion-card-content> {{ descricao }} </ion-card-content>
     </ion-card>
 
     <ion-card>
-        <ion-card-header>
-            Código do grupo
-        </ion-card-header>
-        <ion-card-content>
-            {{ chave }}
-        </ion-card-content>
+        <ion-card-header> Código do grupo </ion-card-header>
+        <ion-card-content> {{ chave }} </ion-card-content>
     </ion-card>
 
     <ion-card>
         <ion-card-header>Membros</ion-card-header>
         <ion-card-content>
             <ion-list>
-                <button ion-item *ngFor="let usu of membrosList">{{ usu.displayName }}</button>
+                <button ion-item *ngFor="let usu of membrosList">
+                    {{ usu.displayName }}
+                </button>
             </ion-list>
         </ion-card-content>
     </ion-card>
@@ -38,9 +29,8 @@
     <ion-card>
         <ion-card-content>
             <button ion-button full color="danger" icon-start>
-                <ion-icon name="exit" is-active="true"></ion-icon> Sair
+                <ion-icon name="exit" is-active="true"></ion-icon> Deixar grupo
             </button>
         </ion-card-content>
-
     </ion-card>
 </ion-content>

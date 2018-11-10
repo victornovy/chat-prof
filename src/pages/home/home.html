@@ -1,15 +1,22 @@
 <ion-header>
-    <ion-navbar>
-        <ion-title>
-            ChatProf
-        </ion-title>
+    <ion-navbar color="primary">
+        <ion-title> ChatProf </ion-title>
+        <ion-buttons end>
+            <button ion-button icon-only (click)="logout()">
+                <ion-icon name="exit"></ion-icon>
+            </button>
+        </ion-buttons>
     </ion-navbar>
 </ion-header>
 
 <ion-content padding>
     <ion-list>
-        <button ion-item *ngFor="let item of listaGrupos" (click)="openTalk(item)">
-            {{item.nome}}
+        <button
+            ion-item
+            *ngFor="let item of listaGrupos"
+            (click)="openTalk(item)"
+        >
+            {{ item.nome }}
         </button>
     </ion-list>
     <ion-fab right bottom>
