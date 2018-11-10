@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
 import { AngularFirestore } from '@angular/fire/firestore';
-import { Subscription } from 'rxjs';
+import { Subscription, combineLatest } from 'rxjs';
 
 @IonicPage()
 @Component({
@@ -16,27 +16,23 @@ export class TalkDetailPage {
 
     private membrosSubs: Subscription;
 
-    constructor(
-        private navCtrl: NavController,
-        private navParams: NavParams,
-        _db: AngularFirestore
-    ) {
+    constructor(private navCtrl: NavController, private navParams: NavParams, _db: AngularFirestore) {
         const info = this.navParams.get('info');
         this.titulo = info.nome;
         this.descricao = info.descricao;
         this.chave = info.chave;
 
-        this.membrosSubs = _db
-            .collection(`usuarios`, ref => {
-                info.membros.forEach(membro => {
-                    ref.where('uid', '==', membro);
-                });
-                return ref;
-            })
-            .valueChanges()
-            .subscribe((usuarios: any) => {
-                this.membrosList = usuarios;
+        const querys$ = [];
+        info.membros.forEach(id => {
+            querys$.push(_db.collection(`usuarios`, ref => ref.where('uid', '==', id)).valueChanges());
+        });
+
+        this.membrosList = [];
+        this.membrosSubs = combineLatest(querys$).subscribe(usuarios => {
+            usuarios.forEach(usu => {
+                this.membrosList.push(usu[0]);
             });
+        });
     }
 
     ionViewWillLeave() {
