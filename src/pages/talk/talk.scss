@@ -11,4 +11,52 @@ page-talk {
         font-size: 12px !important;
         margin-top: 10px !important;
     }
+
+    .msg-label {
+        margin-bottom: 2px;
+        padding: 10px 15px 5px 0;
+        padding: 8px;
+        position: relative;
+        box-shadow: 0 0 0 -1px rgba(0, 0, 0, 0.2),
+            0 1px 1px 0 rgba(0, 0, 0, 0.14), 0 1px 3px 0 rgba(0, 0, 0, 0.12);
+    }
+
+    .msg-label-other {
+        background: #fff;
+        border-radius: 0px 5px 5px 5px;
+    }
+
+    .msg-label-user {
+        background: #e1ffc7;
+        border-radius: 5px 0 5px 5px;
+    }
+
+    .msg-row {
+        width: 90%;
+    }
+
+    .msg-row::after {
+        position: absolute;
+        content: '';
+        width: 0;
+        height: 0;
+        border-style: solid;
+        top: 13px;
+    }
+
+    .msg-row-user {
+        float: right;
+    }
+
+    .msg-row-user::after {
+        border-width: 0 0 10px 10px;
+        border-color: transparent transparent transparent #e1ffc7;
+        right: 8px;
+    }
+
+    .msg-row-other::after {
+        border-width: 0 10px 10px 0;
+        border-color: transparent #fff transparent transparent;
+        left: 8px;
+    }
 }

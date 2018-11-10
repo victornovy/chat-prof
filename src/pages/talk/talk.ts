@@ -76,9 +76,14 @@ export class TalkPage {
         this.groupMsg.add({
             autor: this.userInfo.displayName,
             texto: this.mensagem,
-            data: new Date()
+            data: new Date(),
+            autorId: this.userInfo.uid
         });
 
         this.mensagem = '';
+    }
+
+    sentByLogged(item): boolean {
+        return this.userInfo.uid === item.autorId;
     }
 }
