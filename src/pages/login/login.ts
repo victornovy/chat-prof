@@ -18,18 +18,10 @@ import { AngularFirestore } from '@angular/fire/firestore';
 })
 export class LoginPage {
     constructor(
-        private navCtrl: NavController,
-        private navParams: NavParams,
         private _afAuth: AngularFireAuth,
         private _toastCtrl: ToastController,
         private _db: AngularFirestore
-    ) {
-        this._afAuth.user.subscribe(user => {
-            if (!!user) {
-                this.navCtrl.setRoot(HomePage);
-            }
-        });
-    }
+    ) {}
 
     ionViewDidLoad() {}
 
