@@ -1,5 +1,10 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import {
+    IonicPage,
+    NavController,
+    NavParams,
+    AlertController
+} from 'ionic-angular';
 import { AngularFirestore } from '@angular/fire/firestore';
 import { Subscription, combineLatest } from 'rxjs';
 
@@ -13,18 +18,28 @@ export class TalkDetailPage {
     descricao: string;
     chave: number;
     membrosList: Array<any> = [];
+    infoGrupo: any;
 
     private membrosSubs: Subscription;
 
-    constructor(private navCtrl: NavController, private navParams: NavParams, _db: AngularFirestore) {
-        const info = this.navParams.get('info');
-        this.titulo = info.nome;
-        this.descricao = info.descricao;
-        this.chave = info.chave;
+    constructor(
+        private navCtrl: NavController,
+        private navParams: NavParams,
+        private alertCtrl: AlertController,
+        private _db: AngularFirestore
+    ) {
+        this.infoGrupo = this.navParams.get('info');
+        this.titulo = this.infoGrupo.nome;
+        this.descricao = this.infoGrupo.descricao;
+        this.chave = this.infoGrupo.chave;
 
         const querys$ = [];
-        info.membros.forEach(id => {
-            querys$.push(_db.collection(`usuarios`, ref => ref.where('uid', '==', id)).valueChanges());
+        this.infoGrupo.membros.forEach(id => {
+            querys$.push(
+                _db
+                    .collection(`usuarios`, ref => ref.where('uid', '==', id))
+                    .valueChanges()
+            );
         });
 
         this.membrosList = [];
@@ -37,5 +52,37 @@ export class TalkDetailPage {
 
     ionViewWillLeave() {
         this.membrosSubs.unsubscribe();
+    }
+
+    exitGroup() {
+        this.alertCtrl
+            .create({
+                title: 'Deseja sair do grupo?',
+                buttons: [
+                    {
+                        text: 'Cancelar'
+                    },
+                    {
+                        text: 'Confirmar',
+                        handler: () => {
+                            this.removeUserFromGroup();
+                        }
+                    }
+                ]
+            })
+            .present();
+    }
+
+    removeUserFromGroup() {
+        const userInfo = this.navParams.get('userInfo');
+        const idx = this.infoGrupo.membros.indexOf(userInfo.uid);
+        this.infoGrupo.membros.splice(idx, 1);
+
+        this._db
+            .doc(`grupos/${this.infoGrupo.id}`)
+            .update({ membros: this.infoGrupo.membros })
+            .then(() => {
+                this.navCtrl.popToRoot();
+            });
     }
 }
