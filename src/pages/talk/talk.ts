@@ -1,11 +1,11 @@
-import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams } from 'ionic-angular';
-import { TalkDetailPage } from '../talk-detail/talk-detail';
+import { Component, ElementRef, ViewChild } from '@angular/core';
 import {
     AngularFirestore,
     AngularFirestoreCollection
 } from '@angular/fire/firestore';
-import { Timestamp } from 'rxjs';
+import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import { TalkDetailPage } from '../talk-detail/talk-detail';
+import { AngularFireStorage } from '@angular/fire/storage';
 
 @IonicPage()
 @Component({
@@ -13,18 +13,22 @@ import { Timestamp } from 'rxjs';
     templateUrl: 'talk.html'
 })
 export class TalkPage {
+    @ViewChild('upload') upload;
+
     title: string;
     talkList: Array<any> = [];
     mensagem: string;
     id: string;
     userInfo;
+    chosenFile: File;
 
     groupMsg: AngularFirestoreCollection;
 
     constructor(
         private navCtrl: NavController,
         private navParams: NavParams,
-        _db: AngularFirestore
+        _db: AngularFirestore,
+        private storage: AngularFireStorage
     ) {
         this.userInfo = this.navParams.get('userInfo');
         const info = this.navParams.get('info');
@@ -78,7 +82,8 @@ export class TalkPage {
             autor: this.userInfo.displayName,
             texto: this.mensagem,
             data: new Date(),
-            autorId: this.userInfo.uid
+            autorId: this.userInfo.uid,
+            upload: false
         });
 
         this.mensagem = '';
@@ -86,5 +91,43 @@ export class TalkPage {
 
     sentByLogged(item): boolean {
         return this.userInfo.uid === item.autorId;
+    }
+
+    uploadFile() {
+        this.upload._native.nativeElement.click();
+    }
+
+    changeUploadFile(e) {
+        this.chosenFile = e.target.files[0];
+        const fileName = new Date();
+        this.sendUpload(fileName);
+
+        this.groupMsg.add({
+            autor: this.userInfo.displayName,
+            texto: this.chosenFile.name,
+            data: new Date(),
+            autorId: this.userInfo.uid,
+            upload: true,
+            path: `${this.id}/${fileName.getTime()}`
+        });
+    }
+
+    sendUpload(fileName?: Date) {
+        fileName = fileName || new Date();
+        if (this.chosenFile) {
+            let put = this.storage.ref(`${this.id}/${fileName.getTime()}`);
+            put.put(this.chosenFile);
+            return;
+        }
+    }
+
+    downloadFile(file) {
+        this.storage
+            .ref(file.path)
+            .getDownloadURL()
+            .subscribe(url => {
+                // TODO: implementar download file
+                window.open(url);
+            });
     }
 }

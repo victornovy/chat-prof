@@ -23,7 +23,14 @@
                 }"
             >
                 <p class="msg-autor">{{ item.autor }}</p>
-                {{ item.texto }}
+                <ng-container *ngIf="!item.upload">
+                    {{ item.texto }}
+                </ng-container>
+                <ng-container *ngIf="item.upload">
+                    <div class="upload-desc-file" (click)="downloadFile(item)">
+                        {{ item.texto }}
+                    </div>
+                </ng-container>
                 <p class="msg-info">{{ showData(item.formatData) }}</p>
             </ion-label>
         </ion-item>
@@ -37,7 +44,16 @@
             type="text"
             [(ngModel)]="mensagem"
         ></ion-input>
+        <ion-input
+            type="file"
+            class="file-input"
+            #upload
+            (change)="changeUploadFile($event)"
+        ></ion-input>
         <ion-buttons end>
+            <button ion-button icon-only (click)="uploadFile()">
+                <ion-icon name="cloud-upload"></ion-icon>
+            </button>
             <button ion-button icon-only (click)="sendMsg()">
                 <ion-icon name="send"></ion-icon>
             </button>

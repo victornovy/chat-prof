@@ -59,4 +59,14 @@ page-talk {
         border-color: transparent #fff transparent transparent;
         left: 8px;
     }
+
+    .file-input {
+        position: absolute;
+        opacity: 0;
+    }
+
+    .upload-desc-file {
+        text-decoration: underline;
+        color: blue;
+    }
 }
