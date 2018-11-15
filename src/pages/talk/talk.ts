@@ -32,10 +32,9 @@ export class TalkPage {
     ) {
         this.userInfo = this.navParams.get('userInfo');
         const info = this.navParams.get('info');
-        this.title = info.nome;
+        this.title = !!info.grupo ? info.nome : info.nome[this.userInfo.uid];
         this.id = info.id;
-
-        this.groupMsg = _db.collection(`grupos/${this.id}/msg`, ref =>
+        this.groupMsg = _db.collection(`conversas/${this.id}/msg`, ref =>
             ref.orderBy('data', 'asc')
         );
 

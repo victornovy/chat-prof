@@ -11,13 +11,14 @@
 
 <ion-content padding>
     <ion-list>
-        <button
-            ion-item
-            *ngFor="let item of listaGrupos"
-            (click)="openTalk(item)"
-        >
-            {{ item.nome }}
-        </button>
+        <ng-container *ngFor="let item of listaGrupos">
+            <button ion-item (click)="openTalk(item)" *ngIf="item.grupo">
+                {{ item.nome }}
+            </button>
+            <button ion-item (click)="openTalk(item)" *ngIf="!item.grupo">
+                {{ getNomeConversa(item) }}
+            </button>
+        </ng-container>
     </ion-list>
     <ion-fab right bottom>
         <button ion-fab color="secondary">

@@ -5,26 +5,32 @@
 </ion-header>
 
 <ion-content padding>
-    <ion-card>
-        <ion-card-header> Descrição </ion-card-header>
-        <ion-card-content> {{ descricao }} </ion-card-content>
-    </ion-card>
+    <ng-container *ngIf="infoGrupo.grupo">
+        <ion-card>
+            <ion-card-header> Descrição </ion-card-header>
+            <ion-card-content> {{ descricao }} </ion-card-content>
+        </ion-card>
 
-    <ion-card>
-        <ion-card-header> Código do grupo </ion-card-header>
-        <ion-card-content> {{ chave }} </ion-card-content>
-    </ion-card>
+        <ion-card>
+            <ion-card-header> Código do grupo </ion-card-header>
+            <ion-card-content> {{ chave }} </ion-card-content>
+        </ion-card>
 
-    <ion-card>
-        <ion-card-header>Membros</ion-card-header>
-        <ion-card-content>
-            <ion-list>
-                <button ion-item *ngFor="let usu of membrosList">
-                    {{ usu.displayName }}
-                </button>
-            </ion-list>
-        </ion-card-content>
-    </ion-card>
+        <ion-card>
+            <ion-card-header>Membros</ion-card-header>
+            <ion-card-content>
+                <ion-list>
+                    <button
+                        ion-item
+                        *ngFor="let usu of membrosList"
+                        (click)="conversaParticular(usu)"
+                    >
+                        {{ usu.displayName }}
+                    </button>
+                </ion-list>
+            </ion-card-content>
+        </ion-card>
+    </ng-container>
 
     <ion-card>
         <ion-card-content>
@@ -35,9 +41,9 @@
                 color="danger"
                 class="width-100"
                 icon-start
-                (click)="exitGroup()"
+                (click)="sair()"
             >
-                Deixar grupo
+                {{ infoGrupo.grupo ? 'Deixar grupo' : 'Apagar conversa' }}
             </button>
         </ion-card-content>
     </ion-card>

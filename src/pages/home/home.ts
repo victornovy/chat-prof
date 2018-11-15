@@ -29,8 +29,10 @@ export class HomePage {
             }
 
             this.userInfo = user.providerData[0];
-            this._getGrupos(ref =>
-                ref.where('membros', 'array-contains', this.userInfo.uid)
+            this._getConversas(ref =>
+                ref
+                    .where('membros', 'array-contains', this.userInfo.uid)
+                    .where('ativo', '==', true)
             ).subscribe(i => {
                 this.listaGrupos = i.map(item => {
                     const data = item.payload.doc.data();
@@ -41,8 +43,8 @@ export class HomePage {
         });
     }
 
-    private _getGrupos(query?) {
-        return this._db.collection('grupos', query).snapshotChanges();
+    private _getConversas(query?) {
+        return this._db.collection('conversas', query).snapshotChanges();
     }
 
     createGroup() {
@@ -79,7 +81,7 @@ export class HomePage {
 
     confirmaAddGrupo(codigo) {
         const query = ref => ref.where('chave', '==', +codigo).limit(1);
-        this._getGrupos(query).subscribe(grupos => {
+        this._getConversas(query).subscribe(grupos => {
             if (grupos.length === 0) {
                 const toast = this._toastCtrl.create({
                     message: 'Grupo não encontrado',
@@ -112,5 +114,9 @@ export class HomePage {
 
     logout() {
         this._afAuth.auth.signOut();
+    }
+
+    getNomeConversa(conversa) {
+        return conversa.nome[this.userInfo.uid];
     }
 }

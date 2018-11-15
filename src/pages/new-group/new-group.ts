@@ -50,9 +50,10 @@ export class NewGroupPage {
             descricao: this.form.value.descricao,
             nome: this.form.value.nome,
             membros: [this.userInfo.uid],
-            chave
+            chave,
+            grupo: true
         };
-        this._db.doc(`grupos/${this._db.createId()}`).set(data);
+        this._db.doc(`conversas/${this._db.createId()}`).set(data);
 
         this.showAlert(chave);
         this.navCtrl.pop();
