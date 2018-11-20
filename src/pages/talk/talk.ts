@@ -40,7 +40,8 @@ export class TalkPage {
         this.groupMsg = _db.collection(`conversas/${this.id}/msg`, ref =>
             ref.orderBy('data', 'asc')
         );
-
+        this.talkList = [];
+        console.log(this.id);
         this.groupMsg.valueChanges().subscribe(item => {
             this.talkList = item.map((msg: any) => {
                 msg.formatData = this.formatData(msg.data.seconds);

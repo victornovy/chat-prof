@@ -19,6 +19,9 @@
                 {{ getNomeConversa(item) }}
             </button>
         </ng-container>
+        <button ion-item text-center *ngIf="listaGrupos.length === 0">
+            Não há conversas
+        </button>
     </ion-list>
     <ion-fab right bottom>
         <button ion-fab color="secondary">

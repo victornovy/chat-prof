@@ -50,6 +50,7 @@ export class NewGroupPage {
         if (this.form.invalid) return;
 
         const chave = this.gerarChave();
+        const id = this._db.createId();
         const data = {
             adm: this.userInfo.uid,
             ativo: true,
@@ -57,9 +58,10 @@ export class NewGroupPage {
             nome: this.form.value.nome,
             membros: [this.userInfo.uid],
             chave,
-            grupo: true
+            grupo: true,
+            id
         };
-        this._db.doc(`conversas/${this._db.createId()}`).set(data);
+        this._db.doc(`conversas/${id}`).set(data);
 
         this.showAlert(chave);
         this.navCtrl.pop();
