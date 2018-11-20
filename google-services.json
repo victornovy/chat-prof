@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "512390234652",
+    "firebase_url": "https://chat-prof.firebaseio.com",
+    "project_id": "chat-prof",
+    "storage_bucket": "chat-prof.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:512390234652:android:78c5b636aafdce14",
+        "android_client_info": {
+          "package_name": "com.chatprof"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "512390234652-lpukkmjtbdp254k8rsblul51qpj5bl56.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyACqiYSDi0Je51NnZ66pKDSEH904Uz5mhs"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

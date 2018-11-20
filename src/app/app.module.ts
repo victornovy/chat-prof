@@ -15,6 +15,7 @@ import { TalkDetailPage } from '../pages/talk-detail/talk-detail';
 import { TalkPage } from '../pages/talk/talk';
 import { UserProvider } from '../providers/user/user';
 import { MyApp } from './app.component';
+import { Push } from "@ionic-native/push";
 
 @NgModule({
     declarations: [
@@ -54,6 +55,7 @@ import { MyApp } from './app.component';
     providers: [
         StatusBar,
         SplashScreen,
+        Push,
         { provide: ErrorHandler, useClass: IonicErrorHandler },
         UserProvider
     ]
