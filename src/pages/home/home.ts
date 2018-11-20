@@ -7,6 +7,9 @@ import { NewGroupPage } from '../new-group/new-group';
 import { TalkPage } from '../talk/talk';
 import { LoginPage } from '../login/login';
 
+/**
+ * Classe home | Principal
+ */
 @Component({
     selector: 'page-home',
     templateUrl: 'home.html'
@@ -15,6 +18,9 @@ export class HomePage {
     listaGrupos: Array<any> = [];
     userInfo: UserInfo;
 
+    /**
+     * Valida usuario logado
+     */
     constructor(
         private navCtrl: NavController,
         private alertCtrl: AlertController,
@@ -43,14 +49,23 @@ export class HomePage {
         });
     }
 
+    /**
+     * Busca conversas
+     */
     private _getConversas(query?) {
         return this._db.collection('conversas', query).snapshotChanges();
     }
 
+    /**
+     * Abre tela para cadastro de novo grupo
+     */
     createGroup() {
         this.navCtrl.push(NewGroupPage);
     }
 
+    /**
+     * Abre modal pedindo o usuario do grupo que quer entrar
+     */
     enterTalk() {
         const prompt = this.alertCtrl.create({
             title: 'Nova conversa',
@@ -79,6 +94,9 @@ export class HomePage {
         prompt.present();
     }
 
+    /**
+     * Valida codigo para entrar no grupo
+     */
     confirmaAddGrupo(codigo) {
         const query = ref => ref.where('chave', '==', +codigo).limit(1);
         this._getConversas(query).subscribe(grupos => {
@@ -108,14 +126,23 @@ export class HomePage {
         });
     }
 
+    /**
+     * Abre pagina da conversa
+     */
     openTalk(talk) {
         this.navCtrl.push(TalkPage, { info: talk, userInfo: this.userInfo });
     }
 
+    /**
+     * Sair
+     */
     logout() {
         this._afAuth.auth.signOut();
     }
 
+    /**
+     * Retorna nome do header em caso de conversa particular
+     */
     getNomeConversa(conversa) {
         return conversa.nome[this.userInfo.uid];
     }

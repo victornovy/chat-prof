@@ -8,6 +8,9 @@ import { AngularFireAuth } from '@angular/fire/auth';
 import { HomePage } from '../pages/home/home';
 import { PushOptions, PushObject, Push } from '@ionic-native/push';
 
+/**
+ * Classe princial
+ */
 @Component({
     templateUrl: 'app.html'
 })
@@ -39,6 +42,9 @@ export class MyApp {
         });
     }
 
+    /**
+     * Configurações de push notification
+     */
     private _pushsetup() {
         const options: PushOptions = {
             android: {

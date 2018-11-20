@@ -25,6 +25,9 @@ export class LoginPage {
 
     ionViewDidLoad() {}
 
+    /**
+     * Login com o google
+     */
     loginGoogle() {
         this._afAuth.auth
             .signInWithPopup(new auth.GoogleAuthProvider())
@@ -42,6 +45,9 @@ export class LoginPage {
             });
     }
 
+    /**
+     * Login com o facebook
+     */
     loginFacebook() {
         this._afAuth.auth
             .signInWithPopup(new auth.FacebookAuthProvider())
@@ -59,6 +65,9 @@ export class LoginPage {
             });
     }
 
+    /**
+     * Salva usuario no tabela
+     */
     private _addUser(providerData: UserInfo) {
         const userData = {
             displayName: providerData.displayName,

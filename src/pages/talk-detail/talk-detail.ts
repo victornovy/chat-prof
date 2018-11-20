@@ -23,6 +23,9 @@ export class TalkDetailPage {
 
     private membrosSubs: Subscription;
 
+    /**
+     * Busca usuarios presentes no grupo
+     */
     constructor(
         private navCtrl: NavController,
         private navParams: NavParams,
@@ -54,10 +57,16 @@ export class TalkDetailPage {
         });
     }
 
+    /**
+     * Remove observador das alterações de detalhes
+     */
     ionViewWillLeave() {
         this.membrosSubs.unsubscribe();
     }
 
+    /**
+     * Deixar grupo ou apaga a conversa
+     */
     sair() {
         const msgTitle = !!this.infoGrupo.grupo
             ? 'Deseja sair do grupo?'
@@ -84,11 +93,17 @@ export class TalkDetailPage {
             .present();
     }
 
+    /**
+     * Intiva a conversa
+     */
     private _apagarConversa() {
         this._db.doc(`conversas/${this.infoGrupo.id}`).update({ ativo: false });
         this.navCtrl.popToRoot();
     }
 
+    /**
+     * Remove usuario do grupo
+     */
     private _removeUserFromGroup() {
         const userInfo = this.navParams.get('userInfo');
         const idx = this.infoGrupo.membros.indexOf(userInfo.uid);
@@ -102,6 +117,9 @@ export class TalkDetailPage {
             });
     }
 
+    /**
+     * Validação da chamada do usuario para conversar no privado
+     */
     conversaParticular(usu) {
         const userInfo = this.navParams.get('userInfo');
         if (usu.uid === userInfo.uid) {
@@ -139,6 +157,9 @@ export class TalkDetailPage {
             });
     }
 
+    /**
+     * Salva a conversa privada
+     */
     private _criaConversaPrivada(usu, userInfo) {
         const data = {
             ativo: true,
@@ -153,6 +174,9 @@ export class TalkDetailPage {
         this._abrirConversaPrivada(data, userInfo);
     }
 
+    /**
+     * Abre conversa privada
+     */
     private _abrirConversaPrivada(infoConversa, userInfo) {
         this.navCtrl.popToRoot();
         this.navCtrl.push(TalkPage, { info: infoConversa, userInfo });

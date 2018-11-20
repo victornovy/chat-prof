@@ -24,6 +24,9 @@ export class TalkPage {
 
     groupMsg: AngularFirestoreCollection;
 
+    /**
+     * Busca mensagens do grupo selecionado
+     */
     constructor(
         private navCtrl: NavController,
         private navParams: NavParams,
@@ -46,6 +49,9 @@ export class TalkPage {
         });
     }
 
+    /**
+     * Abre pagina para visualização dos detalhes
+     */
     openTalkDetail() {
         this.navCtrl.push(TalkDetailPage, {
             info: this.navParams.get('info'),
@@ -53,6 +59,9 @@ export class TalkPage {
         });
     }
 
+    /**
+     * Formada a data e hora da mensagem
+     */
     showData(data) {
         const min = this.zeroFillData(data.minutes);
         const hours = this.zeroFillData(data.hours);
@@ -60,6 +69,9 @@ export class TalkPage {
         return `${hours}:${min}`;
     }
 
+    /**
+     * Retorna objeto com os valores de data
+     */
     private formatData(value?: number) {
         const data = !!value ? new Date(value * 1000) : new Date();
         return {
@@ -72,10 +84,16 @@ export class TalkPage {
         };
     }
 
+    /**
+     * Adiciona zero a esquerda no valor
+     */
     private zeroFillData(value) {
         return value.toString().length === 2 ? value : `0${value}`;
     }
 
+    /**
+     * Salva/envia mensagem
+     */
     sendMsg() {
         this.groupMsg.add({
             autor: this.userInfo.displayName,
@@ -88,14 +106,23 @@ export class TalkPage {
         this.mensagem = '';
     }
 
+    /**
+     * Valida se a mensagem foi enviada pelo usuario logado
+     */
     sentByLogged(item): boolean {
         return this.userInfo.uid === item.autorId;
     }
 
+    /**
+     * Abre opção para upload de arquivos
+     */
     uploadFile() {
         this.upload._native.nativeElement.click();
     }
 
+    /**
+     * Realiza envio da mensagem com o documento anexado
+     */
     changeUploadFile(e) {
         this.chosenFile = e.target.files[0];
         const fileName = new Date();
@@ -111,6 +138,9 @@ export class TalkPage {
         });
     }
 
+    /**
+     * Salva o arquivo no servidor
+     */
     sendUpload(fileName?: Date) {
         fileName = fileName || new Date();
         if (this.chosenFile) {
@@ -120,6 +150,9 @@ export class TalkPage {
         }
     }
 
+    /**
+     * Realiza download do arquivo selecionado
+     */
     downloadFile(file) {
         this.storage
             .ref(file.path)

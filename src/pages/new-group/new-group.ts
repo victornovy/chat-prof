@@ -36,10 +36,16 @@ export class NewGroupPage {
         });
     }
 
+    /**
+     * Gera chave aleatoria
+     */
     private gerarChave(): number {
         return Math.floor(10000 + Math.random() * 90000);
     }
 
+    /**
+     * Confirma criação do grupo
+     */
     confirm() {
         if (this.form.invalid) return;
 
@@ -60,6 +66,9 @@ export class NewGroupPage {
         this.navCtrl.push(TalkPage, { info: data, userInfo: this.userInfo });
     }
 
+    /**
+     * Exibe informação de grupo criado ao usuário
+     */
     showAlert(codigo: number) {
         const alert = this._alertCtrl.create({
             title: 'Grupo criado',
