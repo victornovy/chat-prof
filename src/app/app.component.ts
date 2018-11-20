@@ -22,7 +22,6 @@ export class MyApp {
         statusBar: StatusBar,
         splashScreen: SplashScreen,
         _afAuth: AngularFireAuth,
-        private push: Push,
         private alertCtrl: AlertController
     ) {
         _afAuth.user.subscribe(user => {
@@ -46,40 +45,7 @@ export class MyApp {
      * Configurações de push notification
      */
     private _pushsetup() {
-        const options: PushOptions = {
-            android: {
-                senderID: '512390234652',
-                sound: 'true'
-            },
-            ios: {
-                alert: 'true',
-                badge: true,
-                sound: 'false'
-            },
-            windows: {},
-            browser: {
-                pushServiceURL: 'http://push.api.phonegap.com/v1/push'
-            }
-        };
-
-        const pushObject: PushObject = this.push.init(options);
-
-        pushObject
-            .on('notification')
-            .subscribe((notification: any) =>
-                console.log('Received a notification', notification)
-            );
-
-        pushObject
-            .on('registration')
-            .subscribe((registration: any) =>
-                console.log('Device registered', registration)
-            );
-
-        pushObject
-            .on('error')
-            .subscribe(error => console.error('Error with Push plugin', error));
-
+        
         if (this.platform.is('android')) {
             // this.push
             //     .createChannel({

@@ -6,6 +6,7 @@ import { AlertController, NavController, ToastController } from 'ionic-angular';
 import { NewGroupPage } from '../new-group/new-group';
 import { TalkPage } from '../talk/talk';
 import { LoginPage } from '../login/login';
+import { Push } from '@ionic-native/push';
 
 /**
  * Classe home | Principal
@@ -115,6 +116,7 @@ export class HomePage {
             if (!data.membros.some(m => m === this.userInfo.uid)) {
                 data.membros.push(this.userInfo.uid);
                 grupos[0].payload.doc.ref.update({ membros: data.membros });
+                this._addUserToATopic()
                 return;
             }
 

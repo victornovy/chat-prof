@@ -1,15 +1,8 @@
 import { Component } from '@angular/core';
-import {
-    IonicPage,
-    NavController,
-    NavParams,
-    ToastController
-} from 'ionic-angular';
 import { AngularFireAuth } from '@angular/fire/auth';
-import { auth, UserInfo } from 'firebase/app';
-import { HomePage } from '../home/home';
-import { UserProvider } from '../../providers/user/user';
 import { AngularFirestore } from '@angular/fire/firestore';
+import { auth, UserInfo } from 'firebase/app';
+import { IonicPage, ToastController } from 'ionic-angular';
 
 @IonicPage()
 @Component({
