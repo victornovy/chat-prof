@@ -7,6 +7,7 @@ import { NewGroupPage } from '../new-group/new-group';
 import { TalkPage } from '../talk/talk';
 import { LoginPage } from '../login/login';
 import { Push } from '@ionic-native/push';
+import { UserProvider } from '../../providers/user/user';
 
 /**
  * Classe home | Principal
@@ -27,7 +28,8 @@ export class HomePage {
         private alertCtrl: AlertController,
         private _db: AngularFirestore,
         private _toastCtrl: ToastController,
-        private _afAuth: AngularFireAuth
+        private _afAuth: AngularFireAuth,
+        private _userProvider: UserProvider
     ) {
         _afAuth.user.subscribe(user => {
             if (!user) {
@@ -116,7 +118,7 @@ export class HomePage {
             if (!data.membros.some(m => m === this.userInfo.uid)) {
                 data.membros.push(this.userInfo.uid);
                 grupos[0].payload.doc.ref.update({ membros: data.membros });
-                this._addUserToATopic()
+                this._userProvider.addUserToTopic(codigo);
                 return;
             }
 

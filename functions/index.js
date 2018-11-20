@@ -25,45 +25,45 @@ exports.sendPushMsg = functions.firestore
         //     .catch(error => {
         //         console.log('Error sending message:', error);
         //     });
-        console.log("### To Device");
-        admin
-            .messaging()
-            .sendToDevice('c5yCjjoF9Ww:APA91bEVLBZVUIX9xGlYcfBLRdbvarucCAHpzKAPSs7P7CY3MOb-bxldsQUEMgGQqeoVFQs7bKN6Bj24WD78QQIjNkK1BZjHYCd_dhKUzX4RIxcFcpjrsCRVFh1Ha-ihDBJ2s2Fut59J', {
-                notification: {
-                    title: 'Device',
-                    body: 'Device'
-                }
-            })
-            .then(response => {
-                console.log('Successfully sent message Device:', response);
-            })
-            .catch(error => {
-                console.log('Error sending message Device:', error);
-            });
+        // console.log("### To Device");
+        // admin
+        //     .messaging()
+        //     .sendToDevice('c5yCjjoF9Ww:APA91bEVLBZVUIX9xGlYcfBLRdbvarucCAHpzKAPSs7P7CY3MOb-bxldsQUEMgGQqeoVFQs7bKN6Bj24WD78QQIjNkK1BZjHYCd_dhKUzX4RIxcFcpjrsCRVFh1Ha-ihDBJ2s2Fut59J', {
+        //         notification: {
+        //             title: 'Device',
+        //             body: 'Device'
+        //         }
+        //     })
+        //     .then(response => {
+        //         console.log('Successfully sent message Device:', response);
+        //     })
+        //     .catch(error => {
+        //         console.log('Error sending message Device:', error);
+        //     });
 
-        console.log("### DeviceGroup");
-        admin
-            .messaging()
-            .sendToDeviceGroup('testchannel1', {
-                notification: {
-                    title: 'DeviceGroup',
-                    body: 'DeviceGroup'
-                }
-            })
-            .then(response => {
-                console.log('Successfully sent message DeviceGroup:', response);
-            })
-            .catch(error => {
-                console.log('Error sending message DeviceGroup:', error);
-            });
+        // console.log("### DeviceGroup");
+        // admin
+        //     .messaging()
+        //     .sendToDeviceGroup('testchannel1', {
+        //         notification: {
+        //             title: 'DeviceGroup',
+        //             body: 'DeviceGroup'
+        //         }
+        //     })
+        //     .then(response => {
+        //         console.log('Successfully sent message DeviceGroup:', response);
+        //     })
+        //     .catch(error => {
+        //         console.log('Error sending message DeviceGroup:', error);
+        //     });
 
-        console.log("### ToTopic");
+        console.log('### ToTopic');
         admin
             .messaging()
-            .sendToTopic('testchannel1', {
+            .sendToTopic(data.channel, {
                 notification: {
-                    title: 'ToTopic',
-                    body: 'ToTopic'
+                    title: data.autor,
+                    body: data.texto
                 }
             })
             .then(response => {

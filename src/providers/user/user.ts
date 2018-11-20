@@ -10,8 +10,7 @@ export class UserProvider {
     private pushObject: PushObject;
     public registerDevice: any;
 
-
-    constructor(private _afAuth: AngularFireAuth, private push: Push) {}
+    constructor(private push: Push) {}
 
     private _configurePush() {
         const options: PushOptions = {
@@ -37,12 +36,10 @@ export class UserProvider {
                 console.log('Received a notification', notification)
             );
 
-        this.pushObject
-            .on('registration')
-            .subscribe((registration: any) => {
-                this.registerDevice =  registration;
-                console.log('Device registered', registration);
-            });
+        this.pushObject.on('registration').subscribe((registration: any) => {
+            this.registerDevice = registration;
+            console.log('Device registered', registration);
+        });
 
         this.pushObject
             .on('error')

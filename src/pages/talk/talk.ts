@@ -96,12 +96,14 @@ export class TalkPage {
      * Salva/envia mensagem
      */
     sendMsg() {
+        const info = this.navParams.get('info');
         this.groupMsg.add({
             autor: this.userInfo.displayName,
             texto: this.mensagem,
             data: new Date(),
             autorId: this.userInfo.uid,
-            upload: false
+            upload: false,
+            channel: info.chave
         });
 
         this.mensagem = '';
@@ -125,8 +127,9 @@ export class TalkPage {
      * Realiza envio da mensagem com o documento anexado
      */
     changeUploadFile(e) {
-        this.chosenFile = e.target.files[0];
+        const info = this.navParams.get('info');
         const fileName = new Date();
+        this.chosenFile = e.target.files[0];
         this.sendUpload(fileName);
 
         this.groupMsg.add({
@@ -135,7 +138,8 @@ export class TalkPage {
             data: new Date(),
             autorId: this.userInfo.uid,
             upload: true,
-            path: `${this.id}/${fileName.getTime()}`
+            path: `${this.id}/${fileName.getTime()}`,
+            channel: info.chave
         });
     }
 

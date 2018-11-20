@@ -8,6 +8,7 @@ import {
 import { AngularFirestore } from '@angular/fire/firestore';
 import { Subscription, combineLatest } from 'rxjs';
 import { TalkPage } from '../talk/talk';
+import { UserProvider } from '../../providers/user/user';
 
 @IonicPage()
 @Component({
@@ -30,7 +31,8 @@ export class TalkDetailPage {
         private navCtrl: NavController,
         private navParams: NavParams,
         private alertCtrl: AlertController,
-        private _db: AngularFirestore
+        private _db: AngularFirestore,
+        private _userProvider: UserProvider
     ) {
         const userInfo = this.navParams.get('userInfo');
         this.infoGrupo = this.navParams.get('info');
@@ -86,6 +88,9 @@ export class TalkDetailPage {
                             } else {
                                 this._apagarConversa();
                             }
+                            this._userProvider.removeUserToTopic(
+                                this.infoGrupo.chave
+                            );
                         }
                     }
                 ]
