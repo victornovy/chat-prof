@@ -69,7 +69,7 @@ export class UserProvider {
         if (this._platform.is('android')) {
             this.push
                 .createChannel({
-                    id: chanel,
+                    id: chanel.toString(),
                     description: 'My first test channel',
                     importance: 4
                 })

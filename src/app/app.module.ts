@@ -19,6 +19,7 @@ import { Push } from '@ionic-native/push';
 import { AngularFireMessagingModule } from '@angular/fire/messaging';
 import { GooglePlus } from '@ionic-native/google-plus';
 import { IonicStorageModule } from '@ionic/storage';
+import { FIREBASE } from '../environments/firebase';
 
 @NgModule({
     declarations: [
@@ -34,14 +35,7 @@ import { IonicStorageModule } from '@ionic/storage';
         BrowserModule,
         IonicModule.forRoot(MyApp),
         IonicStorageModule.forRoot(),
-        AngularFireModule.initializeApp({
-            apiKey: 'AIzaSyAp-qZFzwlqnpyHtptCV2P80fc5flThwS0',
-            authDomain: 'chat-prof.firebaseapp.com',
-            databaseURL: 'https://chat-prof.firebaseio.com',
-            projectId: 'chat-prof',
-            storageBucket: 'chat-prof.appspot.com',
-            messagingSenderId: '512390234652'
-        }),
+        AngularFireModule.initializeApp(FIREBASE),
         AngularFirestoreModule,
         AngularFireAuthModule,
         AngularFireStorageModule,

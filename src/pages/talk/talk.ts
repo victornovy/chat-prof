@@ -139,7 +139,7 @@ export class TalkPage {
             autorId: this.userInfo.uid,
             upload: true,
             path: `${this.id}/${fileName.getTime()}`,
-            channel: info.chave
+            channel: info.chave.toString()
         });
     }
 
