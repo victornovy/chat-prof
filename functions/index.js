@@ -11,52 +11,6 @@ exports.sendPushMsg = functions.firestore
         console.log(conversaId, msgId);
         // 'c5yCjjoF9Ww:APA91bEVLBZVUIX9xGlYcfBLRdbvarucCAHpzKAPSs7P7CY3MOb-bxldsQUEMgGQqeoVFQs7bKN6Bj24WD78QQIjNkK1BZjHYCd_dhKUzX4RIxcFcpjrsCRVFh1Ha-ihDBJ2s2Fut59J',
 
-        // admin
-        //     .messaging()
-        //     .sendToDevice('c5yCjjoF9Ww:APA91bEVLBZVUIX9xGlYcfBLRdbvarucCAHpzKAPSs7P7CY3MOb-bxldsQUEMgGQqeoVFQs7bKN6Bj24WD78QQIjNkK1BZjHYCd_dhKUzX4RIxcFcpjrsCRVFh1Ha-ihDBJ2s2Fut59J', {
-        //         notification: {
-        //             title: data.autor,
-        //             body: data.texto
-        //         }
-        //     })
-        //     .then(response => {
-        //         console.log('Successfully sent message:', response);
-        //     })
-        //     .catch(error => {
-        //         console.log('Error sending message:', error);
-        //     });
-        // console.log("### To Device");
-        // admin
-        //     .messaging()
-        //     .sendToDevice('c5yCjjoF9Ww:APA91bEVLBZVUIX9xGlYcfBLRdbvarucCAHpzKAPSs7P7CY3MOb-bxldsQUEMgGQqeoVFQs7bKN6Bj24WD78QQIjNkK1BZjHYCd_dhKUzX4RIxcFcpjrsCRVFh1Ha-ihDBJ2s2Fut59J', {
-        //         notification: {
-        //             title: 'Device',
-        //             body: 'Device'
-        //         }
-        //     })
-        //     .then(response => {
-        //         console.log('Successfully sent message Device:', response);
-        //     })
-        //     .catch(error => {
-        //         console.log('Error sending message Device:', error);
-        //     });
-
-        // console.log("### DeviceGroup");
-        // admin
-        //     .messaging()
-        //     .sendToDeviceGroup('testchannel1', {
-        //         notification: {
-        //             title: 'DeviceGroup',
-        //             body: 'DeviceGroup'
-        //         }
-        //     })
-        //     .then(response => {
-        //         console.log('Successfully sent message DeviceGroup:', response);
-        //     })
-        //     .catch(error => {
-        //         console.log('Error sending message DeviceGroup:', error);
-        //     });
-
         console.log('### ToTopic');
         admin
             .messaging()
@@ -73,3 +27,19 @@ exports.sendPushMsg = functions.firestore
                 console.log('Error sending message ToTopic:', error);
             });
     });
+
+export const subscribeToTopic = functions.https.onCall(
+    async (data, context) => {
+        await admin.messaging().subscribeToTopic(data.token, data.topic);
+
+        return `subscribed to ${data.topic}`;
+    }
+);
+
+export const unsubscribeFromTopic = functions.https.onCall(
+    async (data, context) => {
+        await admin.messaging().unsubscribeFromTopic(data.token, data.topic);
+
+        return `unsubscribed from ${data.topic}`;
+    }
+);

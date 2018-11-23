@@ -9,6 +9,7 @@ import {
     NavParams
 } from 'ionic-angular';
 import { TalkPage } from '../talk/talk';
+import { UserProvider } from '../../providers/user/user';
 
 @IonicPage()
 @Component({
@@ -29,10 +30,11 @@ export class NewGroupPage {
         private _alertCtrl: AlertController,
         private _fb: FormBuilder,
         private _db: AngularFirestore,
-        _afAuth: AngularFireAuth
+        _afAuth: AngularFireAuth,
+        private _userProvider: UserProvider
     ) {
-        _afAuth.user.subscribe(user => {
-            this.userInfo = user.providerData[0];
+        _userProvider.getUser().then(user => {
+            this.userInfo = user;
         });
     }
 
@@ -64,6 +66,7 @@ export class NewGroupPage {
         this._db.doc(`conversas/${id}`).set(data);
 
         this.showAlert(chave);
+        this._userProvider.createChannel(chave);
         this.navCtrl.pop();
         this.navCtrl.push(TalkPage, { info: data, userInfo: this.userInfo });
     }

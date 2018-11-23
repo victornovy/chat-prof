@@ -15,7 +15,10 @@ import { TalkDetailPage } from '../pages/talk-detail/talk-detail';
 import { TalkPage } from '../pages/talk/talk';
 import { UserProvider } from '../providers/user/user';
 import { MyApp } from './app.component';
-import { Push } from "@ionic-native/push";
+import { Push } from '@ionic-native/push';
+import { AngularFireMessagingModule } from '@angular/fire/messaging';
+import { GooglePlus } from '@ionic-native/google-plus';
+import { IonicStorageModule } from '@ionic/storage';
 
 @NgModule({
     declarations: [
@@ -30,6 +33,7 @@ import { Push } from "@ionic-native/push";
     imports: [
         BrowserModule,
         IonicModule.forRoot(MyApp),
+        IonicStorageModule.forRoot(),
         AngularFireModule.initializeApp({
             apiKey: 'AIzaSyAp-qZFzwlqnpyHtptCV2P80fc5flThwS0',
             authDomain: 'chat-prof.firebaseapp.com',
@@ -40,7 +44,8 @@ import { Push } from "@ionic-native/push";
         }),
         AngularFirestoreModule,
         AngularFireAuthModule,
-        AngularFireStorageModule
+        AngularFireStorageModule,
+        AngularFireMessagingModule
     ],
     bootstrap: [IonicApp],
     entryComponents: [
@@ -57,7 +62,8 @@ import { Push } from "@ionic-native/push";
         SplashScreen,
         Push,
         { provide: ErrorHandler, useClass: IonicErrorHandler },
-        UserProvider
+        UserProvider,
+        GooglePlus
     ]
 })
 export class AppModule {}

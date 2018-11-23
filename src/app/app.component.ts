@@ -7,6 +7,10 @@ import { LoginPage } from '../pages/login/login';
 import { AngularFireAuth } from '@angular/fire/auth';
 import { HomePage } from '../pages/home/home';
 import { PushOptions, PushObject, Push } from '@ionic-native/push';
+import { AngularFireMessaging } from '@angular/fire/messaging';
+import { UserProvider } from '../providers/user/user';
+import { auth } from 'firebase';
+import { User } from '../model/user';
 
 /**
  * Classe princial
@@ -21,15 +25,35 @@ export class MyApp {
         private platform: Platform,
         statusBar: StatusBar,
         splashScreen: SplashScreen,
-        _afAuth: AngularFireAuth,
-        private alertCtrl: AlertController
+        private _afAuth: AngularFireAuth,
+        _userProvider: UserProvider
     ) {
-        _afAuth.user.subscribe(user => {
-            if (!!user) {
-                this.rootPage = HomePage;
-            } else {
+        _userProvider.getAccess().then(access => {
+            if (!access) {
                 this.rootPage = LoginPage;
+                return;
             }
+
+            this.rootPage = HomePage;
+            this._afAuth.auth
+                .signInWithCredential(
+                    auth.GoogleAuthProvider.credential(
+                        access.idToken,
+                        access.accessToken
+                    )
+                )
+                .then(resp => {
+                    const providerData: any = resp.providerData[0];
+                    const userInfo: User = {
+                        displayName: providerData.displayName,
+                        email: providerData.email,
+                        phoneNumber: providerData.phoneNumber,
+                        photoURL: providerData.photoURL,
+                        providerId: providerData.providerId,
+                        uid: providerData.uid
+                    };
+                    _userProvider.setUser(userInfo);
+                });
         });
 
         platform.ready().then(() => {
@@ -37,32 +61,6 @@ export class MyApp {
             // Here you can do any higher level native things you might need.
             statusBar.styleDefault();
             splashScreen.hide();
-            this._pushsetup();
         });
-    }
-
-    /**
-     * Configurações de push notification
-     */
-    private _pushsetup() {
-        
-        if (this.platform.is('android')) {
-            // this.push
-            //     .createChannel({
-            //         id: 'testchannel1',
-            //         description: 'My first test channel',
-            //         // The importance property goes from 1 = Lowest, 2 = Low, 3 = Normal, 4 = High and 5 = Highest.
-            //         importance: 3
-            //     })
-            //     .then(() => console.log('Channel created'));
-            // Delete a channel (Android O and above)
-            // this.push
-            //     .deleteChannel('testchannel1')
-            //     .then(() => console.log('Channel deleted'));
-            // Return a list of currently configured channels
-            // this.push
-            //     .listChannels()
-            //     .then(channels => console.log('List of channels', channels));
-        }
     }
 }

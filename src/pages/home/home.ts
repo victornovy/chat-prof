@@ -8,6 +8,8 @@ import { TalkPage } from '../talk/talk';
 import { LoginPage } from '../login/login';
 import { Push } from '@ionic-native/push';
 import { UserProvider } from '../../providers/user/user';
+import { GooglePlus } from '@ionic-native/google-plus';
+import { Subscription } from 'rxjs';
 
 /**
  * Classe home | Principal
@@ -19,6 +21,7 @@ import { UserProvider } from '../../providers/user/user';
 export class HomePage {
     listaGrupos: Array<any> = [];
     userInfo: UserInfo;
+    private conversasDb$: Subscription;
 
     /**
      * Valida usuario logado
@@ -29,16 +32,20 @@ export class HomePage {
         private _db: AngularFirestore,
         private _toastCtrl: ToastController,
         private _afAuth: AngularFireAuth,
-        private _userProvider: UserProvider
-    ) {
-        _afAuth.user.subscribe(user => {
+        private _userProvider: UserProvider,
+        private _plus: GooglePlus
+    ) {}
+
+    ionViewDidLoad() {
+        console.log('did load');
+        this._userProvider.getUser().then(user => {
             if (!user) {
                 this.navCtrl.setRoot(LoginPage);
                 return;
             }
 
-            this.userInfo = user.providerData[0];
-            this._getConversas(ref =>
+            this.userInfo = user;
+            this.conversasDb$ = this._getConversas(ref =>
                 ref
                     .where('membros', 'array-contains', this.userInfo.uid)
                     .where('ativo', '==', true)
@@ -50,6 +57,10 @@ export class HomePage {
                 });
             });
         });
+    }
+
+    ionViewWillUnload() {
+        this.conversasDb$ && this.conversasDb$.unsubscribe();
     }
 
     /**
@@ -141,7 +152,9 @@ export class HomePage {
      * Sair
      */
     logout() {
+        this._userProvider.crearStorage();
         this._afAuth.auth.signOut();
+        this.navCtrl.setRoot(LoginPage);
     }
 
     /**

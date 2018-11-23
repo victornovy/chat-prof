@@ -3,14 +3,33 @@ import { Injectable } from '@angular/core';
 import { AngularFireAuth } from '@angular/fire/auth';
 import { UserInfo } from 'firebase';
 import { PushOptions, PushObject, Push } from '@ionic-native/push';
+import { Platform } from 'ionic-angular';
+import { AngularFireMessaging } from '@angular/fire/messaging';
+import { Storage } from '@ionic/storage';
+import { User } from '../../model/user';
 
 @Injectable()
 export class UserProvider {
-    public infoUser: UserInfo;
     private pushObject: PushObject;
     public registerDevice: any;
 
-    constructor(private push: Push) {}
+    constructor(
+        private push: Push,
+        private _platform: Platform,
+        private afMessaging: AngularFireMessaging,
+        private _storage: Storage
+    ) {
+        this._configurePush();
+
+        this.afMessaging.requestPermission.subscribe(
+            () => {
+                console.log('Permission granted!');
+            },
+            error => {
+                console.error(error);
+            }
+        );
+    }
 
     private _configurePush() {
         const options: PushOptions = {
@@ -46,11 +65,50 @@ export class UserProvider {
             .subscribe(error => console.error('Error with Push plugin', error));
     }
 
+    createChannel(chanel) {
+        if (this._platform.is('android')) {
+            this.push
+                .createChannel({
+                    id: chanel,
+                    description: 'My first test channel',
+                    importance: 4
+                })
+                .then(() => console.log('Channel created'));
+        }
+    }
+
     addUserToTopic(chave) {
         this.pushObject.subscribe(chave);
     }
 
     removeUserToTopic(chave) {
         this.pushObject.subscribe(chave);
+    }
+
+    getUser() {
+        return this._storage.get('user');
+    }
+
+    setUser(user: User) {
+        this._storage.set('user', user);
+    }
+
+    removeUser() {
+        this._storage.remove('user');
+    }
+
+    crearStorage() {
+        this._storage.clear();
+    }
+
+    seveAccess(idToken, accessToken) {
+        this._storage.set('access', {
+            idToken,
+            accessToken
+        });
+    }
+
+    getAccess() {
+        return this._storage.get('access');
     }
 }
