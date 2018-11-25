@@ -6,6 +6,7 @@ import {
 import { AngularFireStorage } from '@angular/fire/storage';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
 import { TalkDetailPage } from '../talk-detail/talk-detail';
+import { Subscription } from 'rxjs';
 
 @IonicPage()
 @Component({
@@ -23,6 +24,7 @@ export class TalkPage {
     chosenFile: File;
 
     groupMsg: AngularFirestoreCollection;
+    groupMsg$: Subscription;
 
     /**
      * Busca mensagens do grupo selecionado
@@ -41,13 +43,17 @@ export class TalkPage {
             ref.orderBy('data', 'asc')
         );
         this.talkList = [];
-        console.log(this.id);
-        this.groupMsg.valueChanges().subscribe(item => {
+
+        this.groupMsg$ = this.groupMsg.valueChanges().subscribe(item => {
             this.talkList = item.map((msg: any) => {
                 msg.formatData = this.formatData(msg.data.seconds);
                 return msg;
             });
         });
+    }
+
+    ionViewWillLeave() {
+        this.groupMsg$.unsubscribe();
     }
 
     /**

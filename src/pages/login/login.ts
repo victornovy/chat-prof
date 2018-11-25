@@ -77,7 +77,7 @@ export class LoginPage {
                     });
             })
             .catch(err => {
-                console.log(err);
+                console.log('Google auth error ', err);
             });
     }
 

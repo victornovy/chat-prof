@@ -34,7 +34,6 @@ export class HomePage {
     ) {}
 
     ionViewDidLoad() {
-        console.log('did load');
         this._userProvider.getUser().then(user => {
             if (!user) {
                 this.navCtrl.setRoot(LoginPage);

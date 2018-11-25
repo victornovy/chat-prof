@@ -1,4 +1,8 @@
 page-login {
+    .login-container {
+        margin-top: 10%;
+    }
+
     .logo {
         width: auto;
         height: 144px;
@@ -29,6 +33,7 @@ page-login {
     .facebook {
         color: color($colors, light);
         background-color: color($colors, facebook);
+        border-color: color($colors, facebook);
     }
 
     .btn-google {

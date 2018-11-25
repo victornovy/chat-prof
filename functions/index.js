@@ -8,12 +8,11 @@ exports.sendPushMsg = functions.firestore
         const conversaId = context.params.conversaId;
         const msgId = context.params.msgId;
         const data = change.after.data();
-        console.log(conversaId, msgId);
 
         console.log(
-            `### ToTopic: ${data.channel} | title: ${data.autor} | body: ${
-                data.texto
-            }`
+            `### CvId: ${conversaId} | MsgId: ${msgId} | ToTopic: ${
+                data.channel
+            } | title: ${data.autor} | body: ${data.texto}`
         );
 
         return admin
