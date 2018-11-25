@@ -39,6 +39,7 @@
         <splash density="port-xhdpi" src="resources/android/splash/drawable-port-xhdpi-screen.png" />
         <splash density="port-xxhdpi" src="resources/android/splash/drawable-port-xxhdpi-screen.png" />
         <splash density="port-xxxhdpi" src="resources/android/splash/drawable-port-xxxhdpi-screen.png" />
+        <resource-file src="google-services.json" target="app/google-services.json" />
     </platform>
     <platform name="ios">
         <allow-intent href="itms:*" />
@@ -88,8 +89,9 @@
     </plugin>
     <plugin name="cordova-plugin-googleplus" spec="^5.3.2">
         <variable name="REVERSED_CLIENT_ID" value="512390234652-lpukkmjtbdp254k8rsblul51qpj5bl56.apps.googleusercontent.com" />
-        <variable name="PLAY_SERVICES_VERSION" value="11.8.0" />
+        <variable name="PLAY_SERVICES_VERSION" value="11.6.2" />
     </plugin>
     <plugin name="cordova-sqlite-storage" spec="^2.5.2" />
+    <plugin name="cordova-support-google-services" spec="^1.2.1" />
     <engine name="android" spec="7.0.0" />
 </widget>

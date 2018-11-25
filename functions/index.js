@@ -9,25 +9,26 @@ exports.sendPushMsg = functions.firestore
         const msgId = context.params.msgId;
         const data = change.after.data();
         console.log(conversaId, msgId);
-        // 'c5yCjjoF9Ww:APA91bEVLBZVUIX9xGlYcfBLRdbvarucCAHpzKAPSs7P7CY3MOb-bxldsQUEMgGQqeoVFQs7bKN6Bj24WD78QQIjNkK1BZjHYCd_dhKUzX4RIxcFcpjrsCRVFh1Ha-ihDBJ2s2Fut59J',
 
         console.log(
             `### ToTopic: ${data.channel} | title: ${data.autor} | body: ${
                 data.texto
             }`
         );
-        admin
+
+        return admin
             .messaging()
-            .sendToTopic(data.channel.toString(), {
+            .sendToTopic(`${data.channel}`, {
                 notification: {
                     title: data.autor,
                     body: data.texto
-                }
+                },
+                data: [conversaId, msgId]
             })
-            .then(response => {
-                console.log('Successfully sent message ToTopic:', response);
+            .then(resp => {
+                console.log('send to topic: ', resp);
             })
-            .catch(error => {
-                console.log('Error sending message ToTopic:', error);
+            .catch(err => {
+                console.log('Error sending message:', err);
             });
     });

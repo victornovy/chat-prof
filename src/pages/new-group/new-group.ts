@@ -66,7 +66,7 @@ export class NewGroupPage {
         this._db.doc(`conversas/${id}`).set(data);
 
         this.showAlert(chave);
-        this._userProvider.createChannel(chave);
+        this._userProvider.addUserToTopic(chave);
         this.navCtrl.pop();
         this.navCtrl.push(TalkPage, { info: data, userInfo: this.userInfo });
     }

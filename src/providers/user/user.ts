@@ -49,6 +49,7 @@ export class UserProvider {
         };
 
         this.pushObject = this.push.init(options);
+        console.log(this.pushObject);
         this.pushObject
             .on('notification')
             .subscribe((notification: any) =>
@@ -65,24 +66,20 @@ export class UserProvider {
             .subscribe(error => console.error('Error with Push plugin', error));
     }
 
-    createChannel(chanel) {
-        if (this._platform.is('android')) {
-            this.push
-                .createChannel({
-                    id: chanel.toString(),
-                    description: 'My first test channel',
-                    importance: 4
-                })
-                .then(() => console.log('Channel created'));
-        }
-    }
-
     addUserToTopic(chave) {
-        this.pushObject.subscribe(chave);
+        this.pushObject.subscribe(chave.toString());
     }
 
     removeUserToTopic(chave) {
-        this.pushObject.subscribe(chave);
+        console.log(chave);
+        this.pushObject
+            .unsubscribe(chave.toString())
+            .then(() => {
+                console.log('sucesso');
+            })
+            .catch(e => {
+                console.log('fail: ', e);
+            });
     }
 
     getUser() {

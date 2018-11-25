@@ -45,7 +45,7 @@ export class LoginPage {
             .login({
                 webClientId:
                     '512390234652-lpukkmjtbdp254k8rsblul51qpj5bl56.apps.googleusercontent.com',
-                offline: false,
+                offline: true,
                 scopes: 'profile email'
             })
             .then(user => {
