@@ -55,7 +55,8 @@ export class NewGroupPage {
             membros: [this.userInfo.uid],
             chave,
             grupo: true,
-            id
+            id,
+            channel: chave
         };
         this._db.doc(`conversas/${id}`).set(data);
 

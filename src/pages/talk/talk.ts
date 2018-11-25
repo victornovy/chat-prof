@@ -109,7 +109,7 @@ export class TalkPage {
             data: new Date(),
             autorId: this.userInfo.uid,
             upload: false,
-            channel: info.chave
+            channel: info.channel.toString()
         });
 
         this.mensagem = '';
@@ -145,7 +145,7 @@ export class TalkPage {
             autorId: this.userInfo.uid,
             upload: true,
             path: `${this.id}/${fileName.getTime()}`,
-            channel: info.chave.toString()
+            channel: info.channel.toString()
         });
     }
 

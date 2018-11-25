@@ -18,7 +18,6 @@ import { UserProvider } from '../../providers/user/user';
 export class TalkDetailPage {
     titulo: string;
     descricao: string;
-    chave: number;
     membrosList: Array<any> = [];
     infoGrupo: any;
 
@@ -40,7 +39,6 @@ export class TalkDetailPage {
             ? this.infoGrupo.nome
             : this.infoGrupo.nome[userInfo.uid];
         this.descricao = this.infoGrupo.descricao;
-        this.chave = this.infoGrupo.chave;
 
         const querys$ = [];
         this.infoGrupo.membros.forEach(id => {
@@ -89,7 +87,7 @@ export class TalkDetailPage {
                                 this._apagarConversa();
                             }
                             this._userProvider.removeUserToTopic(
-                                this.infoGrupo.chave
+                                this.infoGrupo.channel
                             );
                         }
                     }
@@ -173,8 +171,10 @@ export class TalkDetailPage {
                 [userInfo.uid]: usu.displayName
             },
             membros: [userInfo.uid, usu.uid],
-            grupo: false
+            grupo: false,
+            channel: `CH_${usu.uid}_${userInfo.uid}`
         };
+        this._userProvider.addUserToTopic(data.channel);
         this._db.doc(`conversas/${this._db.createId()}`).set(data);
         this._abrirConversaPrivada(data, userInfo);
     }

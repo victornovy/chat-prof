@@ -51,6 +51,10 @@ export class HomePage {
                     const id = item.payload.doc.id;
                     return { id, ...data };
                 });
+                this.listaGrupos.forEach(cv => {
+                    console.log(cv);
+                    this._userProvider.addUserToTopic(cv.channel);
+                });
             });
         });
     }
