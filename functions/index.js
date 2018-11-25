@@ -18,13 +18,19 @@ exports.sendPushMsg = functions.firestore
 
         return admin
             .messaging()
-            .sendToTopic(`${data.channel}`, {
-                notification: {
-                    title: data.autor,
-                    body: data.texto
+            .sendToTopic(
+                `${data.channel}`,
+                {
+                    notification: {
+                        title: data.autor,
+                        body: data.texto
+                    },
+                    data: { conversaId, msgId }
                 },
-                data: [conversaId, msgId]
-            })
+                {
+                    contentAvailable: true
+                }
+            )
             .then(resp => {
                 console.log('send to topic: ', resp);
             })

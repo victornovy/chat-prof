@@ -1,5 +1,10 @@
 import { Component } from '@angular/core';
-import { Platform, NavController, AlertController } from 'ionic-angular';
+import {
+    Platform,
+    NavController,
+    AlertController,
+    ToastController
+} from 'ionic-angular';
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 
@@ -22,11 +27,13 @@ export class MyApp {
     rootPage: any = '';
 
     constructor(
-        private platform: Platform,
+        platform: Platform,
         statusBar: StatusBar,
         splashScreen: SplashScreen,
         private _afAuth: AngularFireAuth,
-        _userProvider: UserProvider
+        private _userProvider: UserProvider,
+        private push: Push,
+        private _toastCtrl: ToastController
     ) {
         _userProvider.getAccess().then(access => {
             if (!access) {
@@ -34,26 +41,24 @@ export class MyApp {
                 return;
             }
 
-            this.rootPage = HomePage;
-            this._afAuth.auth
-                .signInWithCredential(
-                    auth.GoogleAuthProvider.credential(
-                        access.idToken,
-                        access.accessToken
+            if (access.service === 'google') {
+                this._afAuth.auth
+                    .signInWithCredential(
+                        auth.GoogleAuthProvider.credential(
+                            access.idToken,
+                            access.accessToken
+                        )
                     )
-                )
-                .then(resp => {
-                    const providerData: any = resp.providerData[0];
-                    const userInfo: User = {
-                        displayName: providerData.displayName,
-                        email: providerData.email,
-                        phoneNumber: providerData.phoneNumber,
-                        photoURL: providerData.photoURL,
-                        providerId: providerData.providerId,
-                        uid: providerData.uid
-                    };
-                    _userProvider.setUser(userInfo);
-                });
+                    .then(this._setUser.bind(this));
+            } else if (access.service === 'facebook') {
+                this._afAuth.auth
+                    .signInWithCredential(
+                        auth.FacebookAuthProvider.credential(access.accessToken)
+                    )
+                    .then(this._setUser.bind(this));
+            }
+
+            this.rootPage = HomePage;
         });
 
         platform.ready().then(() => {
@@ -61,6 +66,60 @@ export class MyApp {
             // Here you can do any higher level native things you might need.
             statusBar.styleDefault();
             splashScreen.hide();
+            this._configurePush();
         });
+    }
+
+    private _configurePush() {
+        const options: PushOptions = {
+            android: {
+                senderID: '512390234652',
+                sound: 'true'
+            },
+            ios: {
+                alert: 'true',
+                badge: true,
+                sound: 'false'
+            },
+            windows: {},
+            browser: {
+                pushServiceURL: 'http://push.api.phonegap.com/v1/push'
+            }
+        };
+
+        const pushObject = this.push.init(options);
+
+        this._userProvider.setPushObject(pushObject);
+
+        pushObject.on('notification').subscribe((notification: any) => {
+            console.log('Received a notification', notification);
+
+            if (notification.additionalData.coldstart) {
+                this._toastCtrl
+                    .create({ message: 'a', duration: 5000 })
+                    .present();
+            }
+        });
+
+        pushObject.on('registration').subscribe((registration: any) => {
+            console.log('Device registered', registration);
+        });
+
+        pushObject
+            .on('error')
+            .subscribe(error => console.error('Error with Push plugin', error));
+    }
+
+    private _setUser(resp) {
+        const providerData: any = resp.providerData[0];
+        const userInfo: User = {
+            displayName: providerData.displayName,
+            email: providerData.email,
+            phoneNumber: providerData.phoneNumber,
+            photoURL: providerData.photoURL,
+            providerId: providerData.providerId,
+            uid: providerData.uid
+        };
+        this._userProvider.setUser(userInfo);
     }
 }

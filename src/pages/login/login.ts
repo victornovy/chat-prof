@@ -12,6 +12,7 @@ import { HomePage } from '../home/home';
 import { GooglePlus } from '@ionic-native/google-plus';
 import { User } from '../../model/user';
 import { UserProvider } from '../../providers/user/user';
+import { Facebook, FacebookLoginResponse } from '@ionic-native/facebook';
 
 @IonicPage()
 @Component({
@@ -26,6 +27,7 @@ export class LoginPage {
         private _db: AngularFirestore,
         private _platform: Platform,
         private _plus: GooglePlus,
+        private _fb: Facebook,
         private _userProvider: UserProvider
     ) {}
 
@@ -45,11 +47,15 @@ export class LoginPage {
             .login({
                 webClientId:
                     '512390234652-lpukkmjtbdp254k8rsblul51qpj5bl56.apps.googleusercontent.com',
-                offline: true,
+                offline: false,
                 scopes: 'profile email'
             })
             .then(user => {
-                this._userProvider.seveAccess(user.idToken, user.accessToken);
+                this._userProvider.seveAccess(
+                    user.idToken,
+                    user.accessToken,
+                    'web'
+                );
                 this._afAuth.auth
                     .signInWithCredential(
                         auth.GoogleAuthProvider.credential(
@@ -81,7 +87,8 @@ export class LoginPage {
             .then((resp: any) => {
                 this._userProvider.seveAccess(
                     resp.credential.idToken,
-                    resp.credential.accessToken
+                    resp.credential.accessToken,
+                    'google'
                 );
                 const providerData: any = resp.user.providerData[0];
                 const userInfo: User = {
@@ -108,6 +115,46 @@ export class LoginPage {
      * Login com o facebook
      */
     loginFacebook() {
+        if (this._platform.is('android')) {
+            this._loginFacebookAndroid();
+        } else {
+            this._loginFacebookWeb();
+        }
+    }
+
+    private _loginFacebookAndroid() {
+        this._fb
+            .login(['public_profile', 'email'])
+            .then((res: FacebookLoginResponse) => {
+                this._userProvider.seveAccess(
+                    null,
+                    res.authResponse.accessToken,
+                    'facebook'
+                );
+                console.log('passou', res);
+                this._afAuth.auth
+                    .signInWithCredential(
+                        auth.FacebookAuthProvider.credential(
+                            res.authResponse.accessToken
+                        )
+                    )
+                    .then(resp => {
+                        const providerData: any = resp.providerData[0];
+                        const userInfo: User = {
+                            displayName: providerData.displayName,
+                            email: providerData.email,
+                            phoneNumber: providerData.phoneNumber,
+                            photoURL: providerData.photoURL,
+                            providerId: providerData.providerId,
+                            uid: providerData.uid
+                        };
+                        this._addUserAndSaveLocal(userInfo);
+                    });
+            })
+            .catch(e => console.log('Error logging into Facebook', e));
+    }
+
+    private _loginFacebookWeb() {
         this._afAuth.auth
             .signInWithPopup(new auth.FacebookAuthProvider())
             .then(resp => {

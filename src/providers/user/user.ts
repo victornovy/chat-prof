@@ -11,16 +11,12 @@ import { User } from '../../model/user';
 @Injectable()
 export class UserProvider {
     private pushObject: PushObject;
-    public registerDevice: any;
 
     constructor(
-        private push: Push,
         private _platform: Platform,
         private afMessaging: AngularFireMessaging,
         private _storage: Storage
     ) {
-        this._configurePush();
-
         this.afMessaging.requestPermission.subscribe(
             () => {
                 console.log('Permission granted!');
@@ -31,39 +27,8 @@ export class UserProvider {
         );
     }
 
-    private _configurePush() {
-        const options: PushOptions = {
-            android: {
-                senderID: '512390234652',
-                sound: 'true'
-            },
-            ios: {
-                alert: 'true',
-                badge: true,
-                sound: 'false'
-            },
-            windows: {},
-            browser: {
-                pushServiceURL: 'http://push.api.phonegap.com/v1/push'
-            }
-        };
-
-        this.pushObject = this.push.init(options);
-        console.log(this.pushObject);
-        this.pushObject
-            .on('notification')
-            .subscribe((notification: any) =>
-                console.log('Received a notification', notification)
-            );
-
-        this.pushObject.on('registration').subscribe((registration: any) => {
-            this.registerDevice = registration;
-            console.log('Device registered', registration);
-        });
-
-        this.pushObject
-            .on('error')
-            .subscribe(error => console.error('Error with Push plugin', error));
+    setPushObject(pushObject: PushObject) {
+        this.pushObject = pushObject;
     }
 
     addUserToTopic(chave) {
@@ -71,15 +36,7 @@ export class UserProvider {
     }
 
     removeUserToTopic(chave) {
-        console.log(chave);
-        this.pushObject
-            .unsubscribe(chave.toString())
-            .then(() => {
-                console.log('sucesso');
-            })
-            .catch(e => {
-                console.log('fail: ', e);
-            });
+        this.pushObject.unsubscribe(chave.toString());
     }
 
     getUser() {
@@ -98,10 +55,11 @@ export class UserProvider {
         this._storage.clear();
     }
 
-    seveAccess(idToken, accessToken) {
+    seveAccess(idToken, accessToken, service) {
         this._storage.set('access', {
             idToken,
-            accessToken
+            accessToken,
+            service
         });
     }
 

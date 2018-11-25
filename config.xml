@@ -40,6 +40,10 @@
         <splash density="port-xxhdpi" src="resources/android/splash/drawable-port-xxhdpi-screen.png" />
         <splash density="port-xxxhdpi" src="resources/android/splash/drawable-port-xxxhdpi-screen.png" />
         <resource-file src="google-services.json" target="app/google-services.json" />
+        <config-file parent="/resources" target="./res/values/strings.xml">
+            <string name="fb_app_id">1170943623073938</string>
+            <string name="fb_app_name">chat-prof</string>
+        </config-file>
     </platform>
     <platform name="ios">
         <allow-intent href="itms:*" />
@@ -87,11 +91,16 @@
         <variable name="SENDER_ID" value="512390234652" />
         <variable name="FCM_VERSION" value="11.6.2" />
     </plugin>
+    <plugin name="cordova-sqlite-storage" spec="^2.5.2" />
+    <plugin name="cordova-support-google-services" spec="^1.2.1" />
     <plugin name="cordova-plugin-googleplus" spec="^5.3.2">
         <variable name="REVERSED_CLIENT_ID" value="512390234652-lpukkmjtbdp254k8rsblul51qpj5bl56.apps.googleusercontent.com" />
         <variable name="PLAY_SERVICES_VERSION" value="11.6.2" />
     </plugin>
-    <plugin name="cordova-sqlite-storage" spec="^2.5.2" />
-    <plugin name="cordova-support-google-services" spec="^1.2.1" />
-    <engine name="android" spec="7.0.0" />
+    <plugin name="cordova-plugin-facebook4" spec="^3.2.0">
+        <variable name="APP_ID" value="1170943623073938" />
+        <variable name="APP_NAME" value="chat-prof" />
+        <variable name="ANDROID_SDK_VERSOIN" value="4.25.0" />
+    </plugin>
+    <engine name="android" spec="^7.1.4" />
 </widget>

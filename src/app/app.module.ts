@@ -20,6 +20,7 @@ import { AngularFireMessagingModule } from '@angular/fire/messaging';
 import { GooglePlus } from '@ionic-native/google-plus';
 import { IonicStorageModule } from '@ionic/storage';
 import { FIREBASE } from '../environments/firebase';
+import { Facebook } from '@ionic-native/facebook';
 
 @NgModule({
     declarations: [
@@ -57,7 +58,8 @@ import { FIREBASE } from '../environments/firebase';
         Push,
         { provide: ErrorHandler, useClass: IonicErrorHandler },
         UserProvider,
-        GooglePlus
+        GooglePlus,
+        Facebook
     ]
 })
 export class AppModule {}
