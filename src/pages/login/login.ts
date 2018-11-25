@@ -1,18 +1,18 @@
 import { Component } from '@angular/core';
 import { AngularFireAuth } from '@angular/fire/auth';
 import { AngularFirestore } from '@angular/fire/firestore';
-import { auth, UserInfo } from 'firebase/app';
+import { Facebook, FacebookLoginResponse } from '@ionic-native/facebook';
+import { GooglePlus } from '@ionic-native/google-plus';
+import { auth } from 'firebase/app';
 import {
     IonicPage,
-    ToastController,
     NavController,
-    Platform
+    Platform,
+    ToastController
 } from 'ionic-angular';
-import { HomePage } from '../home/home';
-import { GooglePlus } from '@ionic-native/google-plus';
 import { User } from '../../model/user';
 import { UserProvider } from '../../providers/user/user';
-import { Facebook, FacebookLoginResponse } from '@ionic-native/facebook';
+import { HomePage } from '../home/home';
 
 @IonicPage()
 @Component({

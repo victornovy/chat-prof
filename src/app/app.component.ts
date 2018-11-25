@@ -1,21 +1,14 @@
 import { Component } from '@angular/core';
-import {
-    Platform,
-    NavController,
-    AlertController,
-    ToastController
-} from 'ionic-angular';
-import { StatusBar } from '@ionic-native/status-bar';
-import { SplashScreen } from '@ionic-native/splash-screen';
-
-import { LoginPage } from '../pages/login/login';
 import { AngularFireAuth } from '@angular/fire/auth';
-import { HomePage } from '../pages/home/home';
-import { PushOptions, PushObject, Push } from '@ionic-native/push';
-import { AngularFireMessaging } from '@angular/fire/messaging';
-import { UserProvider } from '../providers/user/user';
+import { Push, PushOptions } from '@ionic-native/push';
+import { SplashScreen } from '@ionic-native/splash-screen';
+import { StatusBar } from '@ionic-native/status-bar';
 import { auth } from 'firebase';
+import { Platform, ToastController } from 'ionic-angular';
 import { User } from '../model/user';
+import { HomePage } from '../pages/home/home';
+import { LoginPage } from '../pages/login/login';
+import { UserProvider } from '../providers/user/user';
 
 /**
  * Classe princial
@@ -62,8 +55,6 @@ export class MyApp {
         });
 
         platform.ready().then(() => {
-            // Okay, so the platform is ready and our plugins are available.
-            // Here you can do any higher level native things you might need.
             statusBar.styleDefault();
             splashScreen.hide();
             this._configurePush();

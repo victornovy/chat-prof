@@ -1,10 +1,6 @@
-import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { AngularFireAuth } from '@angular/fire/auth';
-import { UserInfo } from 'firebase';
-import { PushOptions, PushObject, Push } from '@ionic-native/push';
-import { Platform } from 'ionic-angular';
 import { AngularFireMessaging } from '@angular/fire/messaging';
+import { PushObject } from '@ionic-native/push';
 import { Storage } from '@ionic/storage';
 import { User } from '../../model/user';
 
@@ -13,7 +9,6 @@ export class UserProvider {
     private pushObject: PushObject;
 
     constructor(
-        private _platform: Platform,
         private afMessaging: AngularFireMessaging,
         private _storage: Storage
     ) {

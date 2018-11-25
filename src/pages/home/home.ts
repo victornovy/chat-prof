@@ -3,13 +3,11 @@ import { AngularFireAuth } from '@angular/fire/auth';
 import { AngularFirestore } from '@angular/fire/firestore';
 import { UserInfo } from 'firebase';
 import { AlertController, NavController, ToastController } from 'ionic-angular';
+import { Subscription } from 'rxjs';
+import { UserProvider } from '../../providers/user/user';
+import { LoginPage } from '../login/login';
 import { NewGroupPage } from '../new-group/new-group';
 import { TalkPage } from '../talk/talk';
-import { LoginPage } from '../login/login';
-import { Push } from '@ionic-native/push';
-import { UserProvider } from '../../providers/user/user';
-import { GooglePlus } from '@ionic-native/google-plus';
-import { Subscription } from 'rxjs';
 
 /**
  * Classe home | Principal
@@ -32,8 +30,7 @@ export class HomePage {
         private _db: AngularFirestore,
         private _toastCtrl: ToastController,
         private _afAuth: AngularFireAuth,
-        private _userProvider: UserProvider,
-        private _plus: GooglePlus
+        private _userProvider: UserProvider
     ) {}
 
     ionViewDidLoad() {

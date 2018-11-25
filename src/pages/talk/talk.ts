@@ -1,11 +1,11 @@
-import { Component, ElementRef, ViewChild } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 import {
     AngularFirestore,
     AngularFirestoreCollection
 } from '@angular/fire/firestore';
+import { AngularFireStorage } from '@angular/fire/storage';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
 import { TalkDetailPage } from '../talk-detail/talk-detail';
-import { AngularFireStorage } from '@angular/fire/storage';
 
 @IonicPage()
 @Component({

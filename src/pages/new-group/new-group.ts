@@ -2,14 +2,9 @@ import { Component } from '@angular/core';
 import { AngularFireAuth } from '@angular/fire/auth';
 import { AngularFirestore } from '@angular/fire/firestore';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import {
-    AlertController,
-    IonicPage,
-    NavController,
-    NavParams
-} from 'ionic-angular';
-import { TalkPage } from '../talk/talk';
+import { AlertController, IonicPage, NavController } from 'ionic-angular';
 import { UserProvider } from '../../providers/user/user';
+import { TalkPage } from '../talk/talk';
 
 @IonicPage()
 @Component({
@@ -26,7 +21,6 @@ export class NewGroupPage {
 
     constructor(
         private navCtrl: NavController,
-        private navParams: NavParams,
         private _alertCtrl: AlertController,
         private _fb: FormBuilder,
         private _db: AngularFirestore,
